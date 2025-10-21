@@ -1,0 +1,130 @@
+=======================================
+   精灵客栈 - 快速部署指南
+=======================================
+
+📌 适用于：有腾讯云服务器的用户
+
+---------------------------
+第一步：准备环境（在服务器上执行）
+---------------------------
+
+1. 安装 Node.js:
+   curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
+   sudo yum install -y nodejs
+
+2. 安装 MySQL:
+   sudo yum install -y mysql-server
+   sudo systemctl start mysqld
+   sudo systemctl enable mysqld
+   sudo mysql_secure_installation  # 设置密码
+
+3. 安装 Nginx:
+   sudo yum install -y nginx
+   sudo systemctl start nginx
+   sudo systemctl enable nginx
+
+---------------------------
+第二步：上传代码
+---------------------------
+
+方式1（推荐）：使用 Git
+   cd /var/www
+   git clone your-repo-url fish
+
+方式2：使用 SCP（在本地执行）
+   scp -r F:/fish root@服务器IP:/var/www/
+
+方式3：使用 FTP 工具（FileZilla/WinSCP）
+   上传到 /var/www/fish
+
+---------------------------
+第三步：配置数据库
+---------------------------
+
+1. 创建数据库：
+   mysql -u root -p < /var/www/fish/backend/config/init.sql
+
+---------------------------
+第四步：配置后端
+---------------------------
+
+1. 进入后端目录：
+   cd /var/www/fish/backend
+
+2. 安装依赖：
+   npm install
+
+3. 创建配置文件：
+   cp .env.template .env
+   nano .env
+   # 修改数据库密码等信息
+
+4. 启动服务：
+   sudo npm install -g pm2
+   pm2 start server.js --name fish-backend
+   pm2 startup
+   pm2 save
+
+---------------------------
+第五步：配置 Nginx
+---------------------------
+
+1. 创建配置文件：
+   sudo nano /etc/nginx/conf.d/fish.conf
+
+2. 复制 nginx.conf 的内容，修改：
+   - server_name 改为你的域名或IP
+   - root 改为 /var/www/fish
+
+3. 重启 Nginx：
+   sudo nginx -t
+   sudo systemctl restart nginx
+
+---------------------------
+第六步：修改前端 API 地址
+---------------------------
+
+1. 编辑留言板文件：
+   nano /var/www/fish/1122-A-board.html
+
+2. 找到第166行左右，修改为：
+   const API_BASE_URL = '/api';
+
+---------------------------
+第七步：配置防火墙
+---------------------------
+
+1. 腾讯云安全组：
+   在控制台添加规则，开放 80 和 443 端口
+
+2. 服务器防火墙：
+   sudo firewall-cmd --permanent --add-service=http
+   sudo firewall-cmd --reload
+
+---------------------------
+第八步：测试访问
+---------------------------
+
+浏览器访问：
+http://你的服务器IP
+http://你的服务器IP/1122-A-board.html
+
+---------------------------
+💡 常用命令
+---------------------------
+
+查看后端状态：pm2 status
+查看后端日志：pm2 logs fish-backend
+重启后端：pm2 restart fish-backend
+
+查看 Nginx 日志：tail -f /var/log/nginx/fish_error.log
+
+备份数据库：
+mysqldump -u root -p fish_db > backup.sql
+
+---------------------------
+🎉 完成！
+---------------------------
+
+详细文档请查看 DEPLOYMENT.md
+

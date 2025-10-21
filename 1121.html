@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>狮子和哑铃的小屋</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置温馨风格的颜色 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        warm: {
+                            50: '#FFF8F0',
+                            100: '#FFEED8',
+                            200: '#FFE0B2',
+                            300: '#FFD591',
+                            400: '#FFC770',
+                            500: '#FFB74D', // 主暖色（暖橙）
+                            600: '#FB8C00',
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Marker Felt"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        @layer utilities {
+            .bg-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffb74d' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-warm-50 bg-pattern min-h-screen">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1 bg-gradient-to-r from-warm-400 to-warm-600"></div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-6 py-12 max-w-2xl">
+        <!-- 小屋图标 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-warm-100 mb-4">
+                <i class="fas fa-home text-5xl text-warm-600"></i>
+            </div>
+            <h1 class="text-[clamp(1.8rem,6vw,2.5rem)] font-cute font-bold text-gray-800 text-shadow">
+                狮子和哑铃的小屋
+            </h1>
+        </div>
+        
+        <!-- 欢迎信息卡片 -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-warm-200/50 mb-10 transform transition-all hover:shadow-warm-200/30">
+            <p class="text-[clamp(1.2rem,4vw,1.6rem)] text-gray-700 text-center mb-6 leading-relaxed">
+                欢迎来到我们的小屋 🏠
+            </p>
+            
+            <div class="flex flex-col items-center">
+                <div class="text-warm-600 mb-2">
+                    <i class="fas fa-calendar text-2xl"></i>
+                </div>
+                <p class="text-[clamp(1.1rem,3.5vw,1.4rem)] text-gray-800 font-medium text-center">
+                    我们在一起已经<br>
+                    <span id="daysTogether" class="text-4xl md:text-5xl font-cute text-warm-600 mt-2 block">
+                        -- 天
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        <!-- 装饰元素 -->
+        <div class="flex justify-center gap-6 mb-8">
+            <i class="fas fa-paw text-warm-400 text-2xl transform rotate-12"></i>
+            <i class="fas fa-dumbbell text-warm-500 text-2xl"></i>
+            <i class="fas fa-heart text-warm-600 text-2xl animate-pulse"></i>
+        </div>
+        
+        <!-- 返回按钮 -->
+        <div class="text-center">
+            <a href="index.html" class="inline-flex items-center gap-2 bg-warm-100 hover:bg-warm-200 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回大堂</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-4 text-center text-gray-500 text-sm mt-auto">
+        <p>❤️ 记录每一个温暖的日子 ❤️</p>
+    </footer>
+
+    <script>
+        // 计算从2025年5月1日到今天的天数
+        function calculateDaysTogether() {
+            // 起始日期：2025年5月1日
+            const startDate = new Date(2025, 4, 1); // 月份是0开始，所以4代表5月
+            // 当前日期
+            const today = new Date();
+            
+            // 计算时间差（毫秒）
+            const timeDiff = today - startDate;
+            // 转换为天数（毫秒 -> 天）
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            // 显示结果
+            document.getElementById('daysTogether').textContent = `${days} 天`;
+        }
+        
+        // 页面加载时计算
+        window.addEventListener('load', calculateDaysTogether);
+    </script>
+</body>
+</html>

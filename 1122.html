@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小鱼和兔子的小屋</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置专属温馨色调（蓝粉系） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fish: {
+                            50: '#F0F7FF', // 浅蓝背景
+                            100: '#E0F0FF',
+                            300: '#99CCF3', // 小鱼蓝
+                        },
+                        rabbit: {
+                            100: '#FFEFF6', // 浅粉背景
+                            300: '#FFC2D1', // 兔子粉
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Arial Rounded MT Bold"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        @layer utilities {
+            .bg-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2399ccf3' fill-opacity='0.15'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-fish-50 to-rabbit-100 bg-pattern min-h-screen">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1 bg-gradient-to-r from-fish-300 to-rabbit-300"></div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-6 py-12 max-w-2xl">
+        <!-- 小屋图标 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/60 backdrop-blur-sm mb-4 shadow-md">
+                <i class="fas fa-home text-5xl text-fish-300"></i>
+            </div>
+            <h1 class="text-[clamp(1.8rem,6vw,2.5rem)] font-cute font-bold text-gray-800">
+                小鱼和兔子的小屋
+            </h1>
+        </div>
+        
+        <!-- 欢迎信息卡片 -->
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-fish-100/70 mb-10 transform transition-all hover:shadow-fish-300/20">
+            <p class="text-[clamp(1.2rem,4vw,1.6rem)] text-gray-700 text-center mb-6 leading-relaxed">
+                欢迎来到我们的秘密基地 💕
+            </p>
+            
+            <div class="flex flex-col items-center">
+                <div class="text-fish-300 mb-2">
+                    <i class="fas fa-calendar-check text-2xl"></i>
+                </div>
+                <p class="text-[clamp(1.1rem,3.5vw,1.4rem)] text-gray-800 font-medium text-center">
+                    我们在一起已经<br>
+                    <span id="daysTogether" class="text-4xl md:text-5xl font-cute text-fish-300 mt-2 block">
+                        -- 天
+                    </span>
+                </p>
+            </div>
+        </div>
+        
+        <!-- 主题装饰元素 -->
+        <div class="flex justify-center gap-8 mb-8">
+            <i class="fas fa-fish text-fish-300 text-2xl float"></i>
+            <i class="fas fa-carrot text-rabbit-300 text-2xl float" style="animation-delay: 0.5s"></i>
+            <i class="fas fa-heart text-rabbit-300 text-2xl animate-pulse"></i>
+        </div>
+        
+        <!-- 导航按钮 -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="index.html" class="inline-flex items-center gap-2 bg-white hover:bg-fish-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-fish-100">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回大堂</span>
+            </a>
+            <a href="1122-A.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-fish-300 to-rabbit-300 hover:from-fish-300/90 hover:to-rabbit-300/90 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+                <i class="fas fa-door-open"></i>
+                <span>走进客厅</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-4 text-center text-gray-500 text-sm mt-auto">
+        <p>✨ 愿每一天都闪闪发光 ✨</p>
+    </footer>
+
+    <script>
+        // 计算从2025年5月5日到今天的天数
+        function calculateDaysTogether() {
+            // 起始日期：2025年5月5日
+            const startDate = new Date(2025, 4, 5); // 月份0代表1月，4代表5月
+            // 当前日期
+            const today = new Date();
+            
+            // 计算时间差（毫秒）
+            const timeDiff = today - startDate;
+            // 转换为天数（毫秒 -> 天）
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            
+            // 显示结果
+            document.getElementById('daysTogether').textContent = `${days} 天`;
+        }
+        
+        // 页面加载时计算
+        window.addEventListener('load', calculateDaysTogether);
+    </script>
+</body>
+</html>

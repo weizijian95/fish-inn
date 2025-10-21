@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>精灵客栈</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义主题 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // 主色调：靛蓝色
+                        secondary: '#EC4899', // 辅助色：粉色
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .input-focus:focus {
+                border-color: #4F46E5;
+                outline: none;
+                --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+                --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) rgba(79, 70, 229, 0.2);
+                box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+            }
+            .btn-bounce {
+                transition-property: transform;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                transition-duration: 300ms;
+            }
+            .btn-bounce:active {
+                transform: scale(0.95);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-purple-50 min-h-screen flex flex-col">
+    <!-- 顶部装饰 -->
+    <div class="w-full h-2 bg-gradient-to-r from-primary to-secondary"></div>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow flex flex-col items-center justify-center px-6 py-12">
+        <!-- 标题区域 -->
+        <div class="text-center mb-12">
+            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-bold text-gray-800 mb-3">
+                Hi,欢迎来到精灵客栈~
+            </h1>
+            <p class="text-gray-500 text-[clamp(1rem,3vw,1.1rem)]">
+                你想要去哪间客房呢~
+            </p>
+        </div>
+        
+        <!-- 输入框区域 -->
+        <div class="w-full max-w-md">
+            <div class="relative mb-6">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fas fa-key text-gray-400 text-lg"></i>
+                </div>
+                <input 
+                    type="text" 
+                    id="roomInput" 
+                    placeholder="请输入房间号" 
+                    class="w-full pl-12 pr-4 py-4 rounded-xl border border-gray-300 text-gray-700 text-[clamp(1rem,3vw,1.2rem)] input-focus shadow-sm transition-all duration-300"
+                    inputmode="numeric"
+                    maxlength="4"
+                >
+            </div>
+            
+            <!-- 按钮 -->
+            <button 
+                id="submitBtn" 
+                class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-4 px-6 rounded-xl transition-all duration-300 shadow-lg hover:shadow-primary/20 btn-bounce flex items-center justify-center gap-2 text-[clamp(1rem,3vw,1.2rem)]"
+            >
+                <span>进入房间</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <!-- 提示文本 -->
+            <p class="text-center text-gray-500 text-sm mt-4">
+                客栈装修中……预计11.21开始营业，当前你可以去任意房间！
+            </p>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-6 text-center text-gray-400 text-sm">
+        <p>©Fish Homepage 2025 -> Forever </p>
+    </footer>
+
+    <script>
+        // 获取元素
+        const roomInput = document.getElementById('roomInput');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // 处理输入跳转
+        function handleRoomNavigation() {
+            const roomNumber = roomInput.value.trim();
+            
+            // 输入验证
+            if (!roomNumber) {
+                showToast('请输入房间号');
+                return;
+            }
+            
+            if (!/^\d+$/.test(roomNumber)) {
+                showToast('请输入数字');
+                return;
+            }
+            
+            // 跳转逻辑
+            switch(roomNumber) {
+                case '1121':
+                    window.location.href = '1121.html';
+                    break;
+                case '1122':
+                    window.location.href = '1122.html';
+                    break;
+                default:
+                    showToast('房间号不存在');
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message) {
+            // 创建toast元素
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-lg z-50 transition-all duration-300 opacity-0';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // 显示动画
+            setTimeout(() => {
+                toast.classList.replace('opacity-0', 'opacity-100');
+            }, 10);
+            
+            // 3秒后隐藏
+            setTimeout(() => {
+                toast.classList.replace('opacity-100', 'opacity-0');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+        
+        // 绑定事件
+        submitBtn.addEventListener('click', handleRoomNavigation);
+        
+        // 支持回车键提交
+        roomInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleRoomNavigation();
+            }
+        });
+        
+        // 自动聚焦输入框
+        window.addEventListener('load', () => {
+            roomInput.focus();
+        });
+    </script>
+</body>
+</html>

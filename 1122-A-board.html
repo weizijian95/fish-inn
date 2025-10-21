@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>温馨留言板 - 1122客厅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fish: {
+                            50: '#F0F7FF',
+                            100: '#E0F0FF',
+                            300: '#99CCF3',
+                            400: '#66B3E8',
+                        },
+                        rabbit: {
+                            50: '#FFF5F9',
+                            100: '#FFEFF6',
+                            300: '#FFC2D1',
+                            400: '#FFB0C4',
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Arial Rounded MT Bold"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        .bg-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2399ccf3' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .message-card {
+            transition: all 0.3s ease;
+        }
+        .message-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-fish-50 via-white to-rabbit-50 bg-pattern min-h-screen flex flex-col">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1.5 bg-gradient-to-r from-fish-400 via-rabbit-300 to-fish-300"></div>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-fish-100 to-rabbit-100 mb-3 shadow-md">
+                <i class="fas fa-message text-4xl text-fish-400"></i>
+            </div>
+            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-cute font-bold bg-gradient-to-r from-fish-400 to-rabbit-400 bg-clip-text text-transparent mb-2">
+                温馨留言板
+            </h1>
+            <p class="text-gray-600 text-sm">在这里留下你的心情和祝福 💌</p>
+        </div>
+
+        <!-- 发表留言按钮 -->
+        <div class="mb-8 text-center">
+            <button id="postMessageBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <i class="fas fa-pen"></i>
+                <span>发表留言</span>
+            </button>
+        </div>
+
+        <!-- 留言列表 -->
+        <div id="messageList" class="space-y-4 mb-8">
+            <!-- 留言将动态加载到这里 -->
+        </div>
+
+        <!-- 空状态提示 -->
+        <div id="emptyState" class="text-center py-16 hidden">
+            <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-400 text-lg">还没有留言，快来抢沙发吧！</p>
+        </div>
+
+        <!-- 返回按钮 -->
+        <div class="text-center mt-8">
+            <a href="1122-A.html" class="inline-flex items-center gap-2 bg-white hover:bg-fish-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回客厅</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 发表留言弹窗 -->
+    <div id="postModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+                <h2 class="text-2xl font-cute font-bold text-center">发表留言</h2>
+            </div>
+            
+            <div class="p-6">
+                <!-- 用户信息设置 -->
+                <div id="userSetup" class="mb-6">
+                    <p class="text-sm text-gray-600 mb-4 text-center">首次留言需要设置昵称和头像</p>
+                    
+                    <!-- 头像选择 -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">选择头像</label>
+                        <div class="flex gap-3 flex-wrap justify-center">
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
+                                <i class="fas fa-fish text-white text-2xl"></i>
+                            </div>
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
+                                <i class="fas fa-heart text-white text-2xl"></i>
+                            </div>
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
+                                <i class="fas fa-star text-white text-2xl"></i>
+                            </div>
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
+                                <i class="fas fa-leaf text-white text-2xl"></i>
+                            </div>
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
+                                <i class="fas fa-sun text-white text-2xl"></i>
+                            </div>
+                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
+                                <i class="fas fa-cloud text-white text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 昵称输入 -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">昵称</label>
+                        <input type="text" id="nicknameInput" placeholder="请输入你的昵称" maxlength="12" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- 留言内容 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">留言内容</label>
+                    <textarea id="messageContent" rows="5" placeholder="写下你想说的话..." maxlength="500" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all resize-none"></textarea>
+                    <div class="text-right text-sm text-gray-400 mt-1">
+                        <span id="charCount">0</span>/500
+                    </div>
+                </div>
+
+                <!-- 按钮组 -->
+                <div class="flex gap-3">
+                    <button id="cancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
+                        取消
+                    </button>
+                    <button id="submitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                        发表
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="py-4 text-center text-gray-500 text-sm">
+        <p>💕 每一条留言都是珍贵的回忆 💕</p>
+    </footer>
+
+    <script>
+        // API配置 - 修改为你的服务器地址
+        const API_BASE_URL = 'http://localhost:3000/api';
+        
+        // 数据存储键（只用于存储用户信息）
+        const STORAGE_KEYS = {
+            USER: 'messageBoard_user'
+        };
+
+        // 头像配置
+        const AVATAR_CONFIG = {
+            fish: { icon: 'fa-fish', gradient: 'from-fish-300 to-fish-400' },
+            rabbit: { icon: 'fa-heart', gradient: 'from-rabbit-300 to-rabbit-400' },
+            star: { icon: 'fa-star', gradient: 'from-purple-300 to-purple-400' },
+            leaf: { icon: 'fa-leaf', gradient: 'from-green-300 to-green-400' },
+            sun: { icon: 'fa-sun', gradient: 'from-yellow-300 to-yellow-400' },
+            cloud: { icon: 'fa-cloud', gradient: 'from-pink-300 to-pink-400' }
+        };
+
+        // 当前选择的头像
+        let selectedAvatar = 'fish';
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMessages();
+            initEventListeners();
+            checkUserInfo();
+        });
+
+        // 检查用户信息
+        function checkUserInfo() {
+            const user = getUserInfo();
+            if (user) {
+                document.getElementById('userSetup').classList.add('hidden');
+            }
+        }
+
+        // 获取用户信息
+        function getUserInfo() {
+            const userStr = localStorage.getItem(STORAGE_KEYS.USER);
+            return userStr ? JSON.parse(userStr) : null;
+        }
+
+        // 保存用户信息（需要先在后端注册）
+        async function saveUserInfo(nickname, avatar) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nickname, avatar })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '注册失败');
+                }
+
+                // 保存到本地存储
+                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
+                return data.user;
+            } catch (error) {
+                console.error('保存用户信息失败:', error);
+                throw error;
+            }
+        }
+
+        // 初始化事件监听
+        function initEventListeners() {
+            // 发表留言按钮
+            document.getElementById('postMessageBtn').addEventListener('click', openPostModal);
+
+            // 关闭弹窗
+            document.getElementById('cancelBtn').addEventListener('click', closePostModal);
+
+            // 提交留言
+            document.getElementById('submitBtn').addEventListener('click', submitMessage);
+
+            // 头像选择
+            document.querySelectorAll('.avatar-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除其他选中状态
+                    document.querySelectorAll('.avatar-option').forEach(opt => {
+                        opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
+                    });
+                    
+                    // 添加选中状态
+                    this.classList.add('ring-4');
+                    const avatar = this.dataset.avatar;
+                    selectedAvatar = avatar;
+                    
+                    // 添加对应颜色的ring
+                    const ringColor = {
+                        fish: 'ring-fish-400',
+                        rabbit: 'ring-rabbit-400',
+                        star: 'ring-purple-400',
+                        leaf: 'ring-green-400',
+                        sun: 'ring-yellow-400',
+                        cloud: 'ring-pink-400'
+                    }[avatar];
+                    this.classList.add(ringColor);
+                });
+            });
+
+            // 字数统计
+            document.getElementById('messageContent').addEventListener('input', function() {
+                document.getElementById('charCount').textContent = this.value.length;
+            });
+
+            // 点击背景关闭弹窗
+            document.getElementById('postModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePostModal();
+                }
+            });
+        }
+
+        // 打开发表留言弹窗
+        function openPostModal() {
+            document.getElementById('postModal').classList.remove('hidden');
+            document.getElementById('messageContent').value = '';
+            document.getElementById('charCount').textContent = '0';
+            
+            // 如果已有用户信息，隐藏设置区
+            const user = getUserInfo();
+            if (user) {
+                document.getElementById('userSetup').classList.add('hidden');
+                selectedAvatar = user.avatar;
+            } else {
+                document.getElementById('userSetup').classList.remove('hidden');
+                // 默认选中第一个头像
+                document.querySelector('.avatar-option').click();
+            }
+        }
+
+        // 关闭发表留言弹窗
+        function closePostModal() {
+            document.getElementById('postModal').classList.add('hidden');
+        }
+
+        // 提交留言
+        async function submitMessage() {
+            const content = document.getElementById('messageContent').value.trim();
+            
+            if (!content) {
+                showToast('请输入留言内容', 'error');
+                return;
+            }
+
+            try {
+                let user = getUserInfo();
+                
+                // 如果没有用户信息，需要先设置
+                if (!user) {
+                    const nickname = document.getElementById('nicknameInput').value.trim();
+                    if (!nickname) {
+                        showToast('请输入昵称', 'error');
+                        return;
+                    }
+                    // 先注册用户
+                    user = await saveUserInfo(nickname, selectedAvatar);
+                }
+
+                // 提交留言到后端
+                const response = await fetch(`${API_BASE_URL}/messages`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: user.id,
+                        nickname: user.nickname,
+                        avatar: user.avatar,
+                        content: content
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '发表留言失败');
+                }
+
+                // 刷新显示
+                await loadMessages();
+                closePostModal();
+                showToast('留言发表成功！', 'success');
+            } catch (error) {
+                console.error('提交留言失败:', error);
+                showToast(error.message || '发表留言失败', 'error');
+            }
+        }
+
+        // 加载留言列表
+        async function loadMessages() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/messages?limit=100`);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '获取留言失败');
+                }
+
+                const messages = data.data.messages;
+                const messageList = document.getElementById('messageList');
+                const emptyState = document.getElementById('emptyState');
+
+                if (messages.length === 0) {
+                    messageList.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                const user = getUserInfo();
+
+                messageList.innerHTML = messages.map(msg => {
+                    const isOwn = user && user.id === msg.user_id;
+                    const avatarConfig = AVATAR_CONFIG[msg.avatar] || AVATAR_CONFIG.fish;
+                    const timeStr = formatTime(new Date(msg.created_at).getTime());
+
+                    return `
+                        <div class="message-card bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-5 border border-gray-100">
+                            <div class="flex items-start gap-4">
+                                <!-- 头像 -->
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md">
+                                    <i class="fas ${avatarConfig.icon} text-white text-xl"></i>
+                                </div>
+                                
+                                <!-- 内容区 -->
+                                <div class="flex-grow min-w-0">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-medium text-gray-800">${escapeHtml(msg.nickname)}</span>
+                                            ${isOwn ? '<span class="text-xs bg-fish-100 text-fish-600 px-2 py-0.5 rounded-full">我</span>' : ''}
+                                        </div>
+                                        <span class="text-xs text-gray-400">${timeStr}</span>
+                                    </div>
+                                    
+                                    <p class="text-gray-700 leading-relaxed break-words">${escapeHtml(msg.content)}</p>
+                                    
+                                    ${isOwn ? `
+                                        <div class="mt-3 flex justify-end">
+                                            <button onclick="deleteMessage(${msg.id})" class="text-xs text-red-400 hover:text-red-600 transition-colors flex items-center gap-1">
+                                                <i class="fas fa-trash-alt"></i>
+                                                删除
+                                            </button>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('加载留言失败:', error);
+                showToast('加载留言失败', 'error');
+            }
+        }
+
+        // 删除留言
+        async function deleteMessage(messageId) {
+            if (!confirm('确定要删除这条留言吗？')) {
+                return;
+            }
+
+            try {
+                const user = getUserInfo();
+                if (!user) {
+                    showToast('请先登录', 'error');
+                    return;
+                }
+
+                const response = await fetch(`${API_BASE_URL}/messages/${messageId}?userId=${user.id}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '删除留言失败');
+                }
+                
+                await loadMessages();
+                showToast('留言已删除', 'success');
+            } catch (error) {
+                console.error('删除留言失败:', error);
+                showToast(error.message || '删除留言失败', 'error');
+            }
+        }
+
+        // 格式化时间
+        function formatTime(timestamp) {
+            const now = Date.now();
+            const diff = now - timestamp;
+            
+            const minute = 60 * 1000;
+            const hour = 60 * minute;
+            const day = 24 * hour;
+
+            if (diff < minute) {
+                return '刚刚';
+            } else if (diff < hour) {
+                return Math.floor(diff / minute) + '分钟前';
+            } else if (diff < day) {
+                return Math.floor(diff / hour) + '小时前';
+            } else if (diff < 7 * day) {
+                return Math.floor(diff / day) + '天前';
+            } else {
+                const date = new Date(timestamp);
+                return `${date.getMonth() + 1}月${date.getDate()}日`;
+            }
+        }
+
+        // HTML转义
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 显示提示消息
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-gradient-to-r from-fish-400 to-rabbit-400';
+            toast.className = `fixed bottom-8 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-3 rounded-full shadow-lg z-50 transition-all duration-300 opacity-0`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-0');
+                toast.classList.add('opacity-100');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
+

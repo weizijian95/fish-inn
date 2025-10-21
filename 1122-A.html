@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1122客厅 - 温馨的小天地</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置专属温馨色调（蓝粉系） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fish: {
+                            50: '#F0F7FF',
+                            100: '#E0F0FF',
+                            300: '#99CCF3',
+                            400: '#66B3E8',
+                        },
+                        rabbit: {
+                            50: '#FFF5F9',
+                            100: '#FFEFF6',
+                            300: '#FFC2D1',
+                            400: '#FFB0C4',
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Arial Rounded MT Bold"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        @layer utilities {
+            .bg-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffc2d1' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Ccircle cx='50' cy='10' r='2'/%3E%3Ccircle cx='10' cy='50' r='2'/%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            .bounce-slow {
+                animation: bounce-slow 2s ease-in-out infinite;
+            }
+            @keyframes bounce-slow {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-5px); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-fish-50 via-white to-rabbit-50 bg-pattern min-h-screen flex flex-col">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1.5 bg-gradient-to-r from-fish-400 via-rabbit-300 to-fish-300"></div>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-6 py-10 max-w-3xl">
+        <!-- 客厅标题 -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-gradient-to-br from-fish-100 to-rabbit-100 mb-4 shadow-lg">
+                <i class="fas fa-couch text-6xl text-fish-400"></i>
+            </div>
+            <h1 class="text-[clamp(2rem,6vw,3rem)] font-cute font-bold bg-gradient-to-r from-fish-400 to-rabbit-400 bg-clip-text text-transparent mb-2">
+                1122 客厅
+            </h1>
+            <p class="text-gray-600 text-[clamp(1rem,3vw,1.2rem)]">
+                ☕ 温馨的小天地 ☕
+            </p>
+        </div>
+        
+        <!-- 客厅装饰区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <!-- 留言板区 -->
+            <a href="1122-A-board.html" class="bg-gradient-to-br from-fish-100 to-fish-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-fish-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                <div class="text-center mb-4">
+                    <i class="fas fa-message text-4xl text-fish-400 bounce-slow"></i>
+                </div>
+                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">温馨留言板</h3>
+                <p class="text-gray-600 text-center text-sm">
+                    留下你的足迹和心情 💌
+                </p>
+            </a>
+
+            <!-- 茶几区 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-rabbit-100 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-4">
+                    <i class="fas fa-mug-hot text-4xl text-rabbit-400 bounce-slow" style="animation-delay: 0.3s"></i>
+                </div>
+                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">温暖茶几</h3>
+                <p class="text-gray-600 text-center text-sm">
+                    喝茶聊天的好地方 🍵
+                </p>
+            </div>
+
+            <!-- 书架区 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-fish-100 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-4">
+                    <i class="fas fa-book text-4xl text-fish-400 bounce-slow" style="animation-delay: 0.6s"></i>
+                </div>
+                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">温馨书架</h3>
+                <p class="text-gray-600 text-center text-sm">
+                    我们的故事书收藏 📚
+                </p>
+            </div>
+
+            <!-- 游戏角 -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-rabbit-100 hover:shadow-xl transition-all duration-300">
+                <div class="text-center mb-4">
+                    <i class="fas fa-gamepad text-4xl text-rabbit-400 bounce-slow" style="animation-delay: 0.9s"></i>
+                </div>
+                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">游戏角落</h3>
+                <p class="text-gray-600 text-center text-sm">
+                    一起玩游戏的快乐时光 🎮
+                </p>
+            </div>
+        </div>
+
+        <!-- 温馨提示卡片 -->
+        <div class="bg-gradient-to-r from-fish-100/50 to-rabbit-100/50 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-fish-200/30">
+            <div class="flex items-center justify-center gap-4 mb-3">
+                <i class="fas fa-heart text-rabbit-400 text-2xl animate-pulse"></i>
+                <h3 class="text-xl font-cute font-bold text-gray-800">客厅小贴士</h3>
+                <i class="fas fa-heart text-fish-400 text-2xl animate-pulse"></i>
+            </div>
+            <p class="text-gray-700 text-center text-[clamp(0.95rem,3vw,1.1rem)] leading-relaxed">
+                这里是我们最温馨的角落，有我们一起看过的电影，<br class="hidden sm:block">
+                一起读过的书，一起玩过的游戏...<br>
+                <span class="text-fish-400 font-medium">愿每个瞬间都被温柔以待 💕</span>
+            </p>
+        </div>
+
+        <!-- 装饰元素 -->
+        <div class="flex justify-center gap-6 mb-8">
+            <i class="fas fa-star text-fish-300 text-xl float"></i>
+            <i class="fas fa-cloud text-rabbit-300 text-xl float" style="animation-delay: 0.5s"></i>
+            <i class="fas fa-moon text-fish-400 text-xl float" style="animation-delay: 1s"></i>
+            <i class="fas fa-star text-rabbit-400 text-xl float" style="animation-delay: 1.5s"></i>
+        </div>
+        
+        <!-- 导航按钮组 -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="1122.html" class="inline-flex items-center gap-2 bg-white hover:bg-fish-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md">
+                <i class="fas fa-door-closed"></i>
+                <span>回到门口</span>
+            </a>
+            <a href="index.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-fish-300 to-rabbit-300 hover:from-fish-400 hover:to-rabbit-400 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+                <i class="fas fa-home"></i>
+                <span>返回大堂</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-4 text-center text-gray-500 text-sm">
+        <p>🌟 我们的小客厅，充满爱与温暖 🌟</p>
+    </footer>
+</body>
+</html>
+
