@@ -100,12 +100,12 @@ cd fish
 git clone your-git-repo .
 
 # 或者直接从本地上传（在你的本地电脑执行）
-scp -r F:/fish/* root@your-server-ip:/var/www/fish/
+scp -r F:/fish/* root@your-server-ip:/root/fish/fish-inn/
 ```
 
 **方案B：使用 FTP 工具**
 - 使用 FileZilla、WinSCP 等工具
-- 上传整个 fish 文件夹到 `/var/www/fish`
+- 上传整个 fish 文件夹到 `/root/fish/fish-inn`
 
 ### 第六步：配置数据库
 
@@ -114,10 +114,10 @@ scp -r F:/fish/* root@your-server-ip:/var/www/fish/
 mysql -u root -p
 
 # 创建数据库和表
-source /var/www/fish/backend/config/init.sql
+source /root/fish/fish-inn/backend/config/init.sql
 
 # 或者手动执行
-mysql -u root -p < /var/www/fish/backend/config/init.sql
+mysql -u root -p < /root/fish/fish-inn/backend/config/init.sql
 
 # 验证数据库创建成功
 mysql -u root -p
@@ -130,7 +130,7 @@ mysql -u root -p
 
 ```bash
 # 进入后端目录
-cd /var/www/fish/backend
+cd /root/fish/fish-inn/backend
 
 # 创建 .env 文件
 cat > .env << 'EOF'
@@ -180,7 +180,7 @@ server {
     listen 80;
     server_name your-domain.com;  # 修改为你的域名或服务器IP
 
-    root /var/www/fish;
+    root /root/fish/fish-inn;
     index index.html;
 
     # 启用 gzip 压缩
@@ -224,7 +224,7 @@ sudo systemctl restart nginx
 
 ```bash
 # 编辑留言板文件
-nano /var/www/fish/1122-A-board.html
+nano /root/fish/fish-inn/1122-A-board.html
 
 # 找到第 166 行左右：
 # const API_BASE_URL = 'http://localhost:3000/api';
@@ -305,7 +305,7 @@ echo "0 3 * * * certbot renew --quiet" | sudo crontab -
 ### 修改前端 API 地址为 HTTPS
 
 ```bash
-nano /var/www/fish/1122-A-board.html
+nano /root/fish/fish-inn/1122-A-board.html
 
 # 修改 API_BASE_URL
 const API_BASE_URL = 'https://your-domain.com/api';
@@ -349,7 +349,7 @@ sudo crontab -e
 
 ```bash
 # 如果使用 Git
-cd /var/www/fish
+cd /root/fish/fish-inn
 git pull
 
 # 如果修改了后端代码
@@ -384,7 +384,7 @@ pm2 restart fish-backend
 sudo systemctl status mysqld
 
 # 检查 .env 配置
-cat /var/www/fish/backend/.env
+cat /root/fish/fish-inn/backend/.env
 
 # 测试 MySQL 连接
 mysql -u root -p fish_db
@@ -405,12 +405,12 @@ mysql -u root -p fish_db
 ### 4. 权限问题
 ```bash
 # 确保 Nginx 有权限访问文件
-sudo chown -R nginx:nginx /var/www/fish  # CentOS
+sudo chown -R nginx:nginx /root/fish/fish-inn  # CentOS
 # 或
-sudo chown -R www-data:www-data /var/www/fish  # Ubuntu
+sudo chown -R www-data:www-data /root/fish/fish-inn  # Ubuntu
 
 # 设置正确的权限
-sudo chmod -R 755 /var/www/fish
+sudo chmod -R 755 /root/fish/fish-inn
 ```
 
 ---
