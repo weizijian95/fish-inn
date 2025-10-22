@@ -392,12 +392,17 @@
                 // 更新头像
                 const avatarDisplay = document.getElementById('userAvatarDisplay');
                 
+                // 调试信息
+                console.log('User avatar value:', user.avatar);
+                console.log('Is custom avatar?', user.avatar.startsWith('/uploads/') || user.avatar.startsWith('http'));
+                
                 // 检查是否是自定义上传的头像
                 if (user.avatar.startsWith('/uploads/') || user.avatar.startsWith('http')) {
                     // 自定义上传的头像
                     const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `${API_BASE_URL.replace('/api', '')}${user.avatar}`;
+                    console.log('Constructed avatar URL:', avatarUrl);
                     avatarDisplay.className = `w-8 h-8 rounded-full overflow-hidden border-2 border-fish-100`;
-                    avatarDisplay.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover">`;
+                    avatarDisplay.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover" onerror="console.error('Failed to load avatar:', this.src)">`;
                 } else {
                     // 预设头像
                     const avatarConfig = AVATAR_CONFIG[user.avatar] || AVATAR_CONFIG.fish;
@@ -412,13 +417,16 @@
         
         // 渲染头像HTML（用于留言列表）
         function renderAvatar(avatar) {
+            console.log('Rendering avatar:', avatar);
+            
             // 检查是否是自定义上传的头像
             if (avatar.startsWith('/uploads/') || avatar.startsWith('http')) {
                 // 自定义上传的头像
                 const avatarUrl = avatar.startsWith('http') ? avatar : `${API_BASE_URL.replace('/api', '')}${avatar}`;
+                console.log('Custom avatar URL:', avatarUrl);
                 return `
                     <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-white">
-                        <img src="${avatarUrl}" class="w-full h-full object-cover">
+                        <img src="${avatarUrl}" class="w-full h-full object-cover" onerror="console.error('Failed to load message avatar:', this.src)">
                     </div>
                 `;
             } else {
