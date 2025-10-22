@@ -26,7 +26,6 @@ desktop.ini
 *~
 
 # 备份文件
-*.sql
 backup/
 *.bak
 
