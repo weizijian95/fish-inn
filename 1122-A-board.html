@@ -51,6 +51,35 @@
 
     <!-- 主内容区 -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 用户信息栏 -->
+        <div id="userBar" class="mb-6 flex justify-end">
+            <!-- 未登录状态 -->
+            <div id="notLoggedIn" class="flex gap-2">
+                <button id="loginBtn" class="bg-white hover:bg-fish-50 text-gray-800 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md text-sm">
+                    <i class="fas fa-sign-in-alt mr-1"></i>登录
+                </button>
+                <button id="registerBtn" class="bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow-md text-sm">
+                    <i class="fas fa-user-plus mr-1"></i>注册
+                </button>
+            </div>
+            
+            <!-- 已登录状态 -->
+            <div id="loggedIn" class="hidden flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-white rounded-full py-2 px-4 shadow-sm border border-fish-100">
+                    <div id="userAvatarDisplay" class="w-8 h-8 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center">
+                        <i class="fas fa-fish text-white"></i>
+                    </div>
+                    <span id="userNicknameDisplay" class="text-gray-800 font-medium text-sm"></span>
+                </div>
+                <button id="userMenuBtn" class="bg-white hover:bg-fish-50 text-gray-800 font-medium py-2 px-3 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button id="logoutBtn" class="bg-white hover:bg-red-50 text-red-500 font-medium py-2 px-3 rounded-full transition-all duration-300 shadow-sm border border-red-100 hover:shadow-md">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+
         <!-- 标题区 -->
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-fish-100 to-rabbit-100 mb-3 shadow-md">
@@ -90,6 +119,193 @@
         </div>
     </main>
 
+    <!-- 登录弹窗 -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+                <h2 class="text-2xl font-cute font-bold text-center">登录</h2>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                    <input type="text" id="loginUsername" placeholder="请输入用户名" maxlength="50" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="loginCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
+                        取消
+                    </button>
+                    <button id="loginSubmitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                        登录
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <span class="text-sm text-gray-600">还没有账号？</span>
+                    <button id="switchToRegister" class="text-sm text-fish-400 hover:text-fish-500 font-medium">
+                        立即注册
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+                <h2 class="text-2xl font-cute font-bold text-center">注册</h2>
+            </div>
+            
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">用户名</label>
+                    <input type="text" id="registerUsername" placeholder="请输入用户名" maxlength="50" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">密码</label>
+                    <input type="password" id="registerPassword" placeholder="请输入密码" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">昵称</label>
+                    <input type="text" id="registerNickname" placeholder="请输入昵称" maxlength="50" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
+                </div>
+
+                <!-- 头像选择 -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">选择头像</label>
+                    <div class="flex gap-3 flex-wrap justify-center">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
+                            <i class="fas fa-fish text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
+                            <i class="fas fa-heart text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
+                            <i class="fas fa-star text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
+                            <i class="fas fa-leaf text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
+                            <i class="fas fa-sun text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
+                            <i class="fas fa-cloud text-white text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 上传自定义头像 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">或上传自定义头像</label>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0">
+                            <div id="registerAvatarPreview" class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200">
+                                <i class="fas fa-image text-gray-400 text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <input type="file" id="registerAvatarUpload" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('registerAvatarUpload').click()" class="bg-fish-100 hover:bg-fish-200 text-fish-600 font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm">
+                                <i class="fas fa-upload mr-1"></i>选择图片
+                            </button>
+                            <p class="text-xs text-gray-500 mt-1">支持 JPG、PNG、GIF，最大 5MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="registerCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
+                        取消
+                    </button>
+                    <button id="registerSubmitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                        注册
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <span class="text-sm text-gray-600">已有账号？</span>
+                    <button id="switchToLogin" class="text-sm text-fish-400 hover:text-fish-500 font-medium">
+                        立即登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户设置弹窗 -->
+    <div id="userSettingsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+                <h2 class="text-2xl font-cute font-bold text-center">个人设置</h2>
+            </div>
+            
+            <div class="p-6">
+                <!-- 头像选择 -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">选择预设头像</label>
+                    <div class="flex gap-3 flex-wrap justify-center">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
+                            <i class="fas fa-fish text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
+                            <i class="fas fa-heart text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
+                            <i class="fas fa-star text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
+                            <i class="fas fa-leaf text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
+                            <i class="fas fa-sun text-white text-2xl"></i>
+                        </div>
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
+                            <i class="fas fa-cloud text-white text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 上传自定义头像 -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">或上传自定义头像</label>
+                    <div class="flex items-center gap-4">
+                        <div class="flex-shrink-0">
+                            <div id="settingsAvatarPreview" class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden border-2 border-gray-200">
+                                <i class="fas fa-image text-gray-400 text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow">
+                            <input type="file" id="settingsAvatarUpload" accept="image/*" class="hidden">
+                            <button type="button" onclick="document.getElementById('settingsAvatarUpload').click()" class="bg-fish-100 hover:bg-fish-200 text-fish-600 font-medium py-2 px-4 rounded-lg transition-all duration-300 text-sm">
+                                <i class="fas fa-upload mr-1"></i>选择图片
+                            </button>
+                            <p class="text-xs text-gray-500 mt-1">支持 JPG、PNG、GIF，最大 5MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button id="settingsCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
+                        取消
+                    </button>
+                    <button id="settingsSaveBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 发表留言弹窗 -->
     <div id="postModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
@@ -98,42 +314,6 @@
             </div>
             
             <div class="p-6">
-                <!-- 用户信息设置 -->
-                <div id="userSetup" class="mb-6">
-                    <p class="text-sm text-gray-600 mb-4 text-center">首次留言需要设置昵称和头像</p>
-                    
-                    <!-- 头像选择 -->
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">选择头像</label>
-                        <div class="flex gap-3 flex-wrap justify-center">
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
-                                <i class="fas fa-fish text-white text-2xl"></i>
-                            </div>
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
-                                <i class="fas fa-heart text-white text-2xl"></i>
-                            </div>
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
-                                <i class="fas fa-star text-white text-2xl"></i>
-                            </div>
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
-                                <i class="fas fa-leaf text-white text-2xl"></i>
-                            </div>
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
-                                <i class="fas fa-sun text-white text-2xl"></i>
-                            </div>
-                            <div class="avatar-option w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
-                                <i class="fas fa-cloud text-white text-2xl"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 昵称输入 -->
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">昵称</label>
-                        <input type="text" id="nicknameInput" placeholder="请输入你的昵称" maxlength="12" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-fish-400 focus:ring-2 focus:ring-fish-400/20 focus:outline-none transition-all">
-                    </div>
-                </div>
-
                 <!-- 留言内容 -->
                 <div class="mb-6">
                     <label class="block text-sm font-medium text-gray-700 mb-2">留言内容</label>
@@ -163,7 +343,7 @@
 
     <script>
         // API配置 - 修改为你的服务器地址
-        const API_BASE_URL = 'http://fish-rabbit.site/api';
+        const API_BASE_URL = 'https://fish-rabbit.site/api';
         
         // 数据存储键（只用于存储用户信息）
         const STORAGE_KEYS = {
@@ -182,19 +362,73 @@
 
         // 当前选择的头像
         let selectedAvatar = 'fish';
+        let selectedAvatarRegister = 'fish';
+        let selectedAvatarSettings = 'fish';
+        
+        // 上传的头像URL
+        let uploadedAvatarRegister = null;
+        let uploadedAvatarSettings = null;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             loadMessages();
             initEventListeners();
-            checkUserInfo();
+            updateUserUI();
         });
 
-        // 检查用户信息
-        function checkUserInfo() {
+        // 更新用户界面
+        function updateUserUI() {
             const user = getUserInfo();
+            const notLoggedIn = document.getElementById('notLoggedIn');
+            const loggedIn = document.getElementById('loggedIn');
+            
             if (user) {
-                document.getElementById('userSetup').classList.add('hidden');
+                notLoggedIn.classList.add('hidden');
+                loggedIn.classList.remove('hidden');
+                
+                // 更新显示的用户信息
+                document.getElementById('userNicknameDisplay').textContent = user.nickname;
+                
+                // 更新头像
+                const avatarDisplay = document.getElementById('userAvatarDisplay');
+                
+                // 检查是否是自定义上传的头像
+                if (user.avatar.startsWith('/uploads/') || user.avatar.startsWith('http')) {
+                    // 自定义上传的头像
+                    const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `${API_BASE_URL.replace('/api', '')}${user.avatar}`;
+                    avatarDisplay.className = `w-8 h-8 rounded-full overflow-hidden border-2 border-fish-100`;
+                    avatarDisplay.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover">`;
+                } else {
+                    // 预设头像
+                    const avatarConfig = AVATAR_CONFIG[user.avatar] || AVATAR_CONFIG.fish;
+                    avatarDisplay.className = `w-8 h-8 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center`;
+                    avatarDisplay.innerHTML = `<i class="fas ${avatarConfig.icon} text-white"></i>`;
+                }
+            } else {
+                notLoggedIn.classList.remove('hidden');
+                loggedIn.classList.add('hidden');
+            }
+        }
+        
+        // 渲染头像HTML（用于留言列表）
+        function renderAvatar(avatar) {
+            // 检查是否是自定义上传的头像
+            if (avatar.startsWith('/uploads/') || avatar.startsWith('http')) {
+                // 自定义上传的头像
+                const avatarUrl = avatar.startsWith('http') ? avatar : `${API_BASE_URL.replace('/api', '')}${avatar}`;
+                return `
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-white">
+                        <img src="${avatarUrl}" class="w-full h-full object-cover">
+                    </div>
+                `;
+            } else {
+                // 预设头像
+                const avatarConfig = AVATAR_CONFIG[avatar] || AVATAR_CONFIG.fish;
+                return `
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md">
+                        <i class="fas ${avatarConfig.icon} text-white text-xl"></i>
+                    </div>
+                `;
             }
         }
 
@@ -204,68 +438,103 @@
             return userStr ? JSON.parse(userStr) : null;
         }
 
-        // 保存用户信息（需要先在后端注册）
-        async function saveUserInfo(nickname, avatar) {
-            try {
-                const response = await fetch(`${API_BASE_URL}/users/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ nickname, avatar })
-                });
+        // 保存用户信息到本地存储
+        function saveUserToLocal(user) {
+            localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+        }
 
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || '注册失败');
-                }
-
-                // 保存到本地存储
-                localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(data.user));
-                return data.user;
-            } catch (error) {
-                console.error('保存用户信息失败:', error);
-                throw error;
-            }
+        // 清除用户信息
+        function clearUserInfo() {
+            localStorage.removeItem(STORAGE_KEYS.USER);
         }
 
         // 初始化事件监听
         function initEventListeners() {
-            // 发表留言按钮
-            document.getElementById('postMessageBtn').addEventListener('click', openPostModal);
-
-            // 关闭弹窗
-            document.getElementById('cancelBtn').addEventListener('click', closePostModal);
-
-            // 提交留言
-            document.getElementById('submitBtn').addEventListener('click', submitMessage);
-
-            // 头像选择
-            document.querySelectorAll('.avatar-option').forEach(option => {
+            // 顶部按钮
+            document.getElementById('loginBtn').addEventListener('click', openLoginModal);
+            document.getElementById('registerBtn').addEventListener('click', openRegisterModal);
+            document.getElementById('userMenuBtn').addEventListener('click', openUserSettingsModal);
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            
+            // 登录弹窗
+            document.getElementById('loginCancelBtn').addEventListener('click', closeLoginModal);
+            document.getElementById('loginSubmitBtn').addEventListener('click', submitLogin);
+            document.getElementById('switchToRegister').addEventListener('click', () => {
+                closeLoginModal();
+                openRegisterModal();
+            });
+            document.getElementById('loginModal').addEventListener('click', function(e) {
+                if (e.target === this) closeLoginModal();
+            });
+            
+            // 注册弹窗
+            document.getElementById('registerCancelBtn').addEventListener('click', closeRegisterModal);
+            document.getElementById('registerSubmitBtn').addEventListener('click', submitRegister);
+            document.getElementById('switchToLogin').addEventListener('click', () => {
+                closeRegisterModal();
+                openLoginModal();
+            });
+            document.getElementById('registerModal').addEventListener('click', function(e) {
+                if (e.target === this) closeRegisterModal();
+            });
+            
+            // 注册头像选择
+            document.querySelectorAll('.avatar-option-register').forEach(option => {
                 option.addEventListener('click', function() {
-                    // 移除其他选中状态
-                    document.querySelectorAll('.avatar-option').forEach(opt => {
+                    document.querySelectorAll('.avatar-option-register').forEach(opt => {
                         opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
                     });
-                    
-                    // 添加选中状态
                     this.classList.add('ring-4');
                     const avatar = this.dataset.avatar;
-                    selectedAvatar = avatar;
-                    
-                    // 添加对应颜色的ring
+                    selectedAvatarRegister = avatar;
+                    uploadedAvatarRegister = null; // 清除上传的头像
                     const ringColor = {
-                        fish: 'ring-fish-400',
-                        rabbit: 'ring-rabbit-400',
-                        star: 'ring-purple-400',
-                        leaf: 'ring-green-400',
-                        sun: 'ring-yellow-400',
-                        cloud: 'ring-pink-400'
+                        fish: 'ring-fish-400', rabbit: 'ring-rabbit-400', star: 'ring-purple-400',
+                        leaf: 'ring-green-400', sun: 'ring-yellow-400', cloud: 'ring-pink-400'
                     }[avatar];
                     this.classList.add(ringColor);
                 });
             });
+            
+            // 注册上传头像
+            document.getElementById('registerAvatarUpload').addEventListener('change', handleRegisterAvatarUpload);
+            
+            // 用户设置弹窗
+            document.getElementById('settingsCancelBtn').addEventListener('click', closeUserSettingsModal);
+            document.getElementById('settingsSaveBtn').addEventListener('click', saveUserSettings);
+            document.getElementById('userSettingsModal').addEventListener('click', function(e) {
+                if (e.target === this) closeUserSettingsModal();
+            });
+            
+            // 设置头像选择
+            document.querySelectorAll('.avatar-option-settings').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.avatar-option-settings').forEach(opt => {
+                        opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
+                    });
+                    this.classList.add('ring-4');
+                    const avatar = this.dataset.avatar;
+                    selectedAvatarSettings = avatar;
+                    uploadedAvatarSettings = null; // 清除上传的头像
+                    const ringColor = {
+                        fish: 'ring-fish-400', rabbit: 'ring-rabbit-400', star: 'ring-purple-400',
+                        leaf: 'ring-green-400', sun: 'ring-yellow-400', cloud: 'ring-pink-400'
+                    }[avatar];
+                    this.classList.add(ringColor);
+                });
+            });
+            
+            // 设置上传头像
+            document.getElementById('settingsAvatarUpload').addEventListener('change', handleSettingsAvatarUpload);
+
+            // 发表留言按钮
+            document.getElementById('postMessageBtn').addEventListener('click', openPostModal);
+
+            // 关闭发表留言弹窗
+            document.getElementById('cancelBtn').addEventListener('click', closePostModal);
+
+            // 提交留言
+            document.getElementById('submitBtn').addEventListener('click', submitMessage);
 
             // 字数统计
             document.getElementById('messageContent').addEventListener('input', function() {
@@ -280,22 +549,331 @@
             });
         }
 
+        // ========== 头像上传相关 ==========
+        // 处理注册时上传头像
+        async function handleRegisterAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // 验证文件类型
+            if (!file.type.startsWith('image/')) {
+                showToast('请选择图片文件', 'error');
+                return;
+            }
+
+            // 验证文件大小 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('图片大小不能超过 5MB', 'error');
+                return;
+            }
+
+            // 显示预览
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('registerAvatarPreview');
+                preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            };
+            reader.readAsDataURL(file);
+
+            // 上传到服务器
+            try {
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                const response = await fetch(`${API_BASE_URL}/upload/avatar`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '上传失败');
+                }
+
+                uploadedAvatarRegister = data.avatarUrl;
+                
+                // 清除预设头像选择
+                document.querySelectorAll('.avatar-option-register').forEach(opt => {
+                    opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
+                });
+                
+                showToast('头像上传成功', 'success');
+            } catch (error) {
+                console.error('上传头像失败:', error);
+                showToast(error.message || '上传头像失败', 'error');
+            }
+        }
+
+        // 处理设置时上传头像
+        async function handleSettingsAvatarUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // 验证文件类型
+            if (!file.type.startsWith('image/')) {
+                showToast('请选择图片文件', 'error');
+                return;
+            }
+
+            // 验证文件大小 (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('图片大小不能超过 5MB', 'error');
+                return;
+            }
+
+            // 显示预览
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('settingsAvatarPreview');
+                preview.innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover">`;
+            };
+            reader.readAsDataURL(file);
+
+            // 上传到服务器
+            try {
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                const response = await fetch(`${API_BASE_URL}/upload/avatar`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '上传失败');
+                }
+
+                uploadedAvatarSettings = data.avatarUrl;
+                
+                // 清除预设头像选择
+                document.querySelectorAll('.avatar-option-settings').forEach(opt => {
+                    opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
+                });
+                
+                showToast('头像上传成功', 'success');
+            } catch (error) {
+                console.error('上传头像失败:', error);
+                showToast(error.message || '上传头像失败', 'error');
+            }
+        }
+
+        // ========== 登录相关 ==========
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+        }
+
+        async function submitLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                showToast('请输入用户名和密码', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '登录失败');
+                }
+
+                // 保存用户信息到本地
+                saveUserToLocal(data.user);
+                updateUserUI();
+                closeLoginModal();
+                showToast('登录成功！', 'success');
+                
+                // 刷新留言列表
+                await loadMessages();
+            } catch (error) {
+                console.error('登录失败:', error);
+                showToast(error.message || '登录失败', 'error');
+            }
+        }
+
+        // ========== 注册相关 ==========
+        function openRegisterModal() {
+            document.getElementById('registerModal').classList.remove('hidden');
+            document.getElementById('registerUsername').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerNickname').value = '';
+            // 重置上传头像
+            uploadedAvatarRegister = null;
+            document.getElementById('registerAvatarPreview').innerHTML = '<i class="fas fa-image text-gray-400 text-2xl"></i>';
+            document.getElementById('registerAvatarUpload').value = '';
+            // 默认选中第一个头像
+            selectedAvatarRegister = 'fish';
+            document.querySelector('.avatar-option-register[data-avatar="fish"]').click();
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.add('hidden');
+        }
+
+        async function submitRegister() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const nickname = document.getElementById('registerNickname').value.trim();
+
+            if (!username || !password || !nickname) {
+                showToast('请填写完整信息', 'error');
+                return;
+            }
+
+            // 确定使用哪个头像（上传的优先）
+            const avatar = uploadedAvatarRegister || selectedAvatarRegister;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        username, 
+                        password, 
+                        nickname, 
+                        avatar: avatar
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '注册失败');
+                }
+
+                // 保存用户信息到本地
+                saveUserToLocal(data.user);
+                updateUserUI();
+                closeRegisterModal();
+                showToast('注册成功！', 'success');
+                
+                // 刷新留言列表
+                await loadMessages();
+            } catch (error) {
+                console.error('注册失败:', error);
+                showToast(error.message || '注册失败', 'error');
+            }
+        }
+
+        // ========== 用户设置相关 ==========
+        function openUserSettingsModal() {
+            const user = getUserInfo();
+            if (!user) return;
+            
+            document.getElementById('userSettingsModal').classList.remove('hidden');
+            
+            // 重置上传头像
+            uploadedAvatarSettings = null;
+            document.getElementById('settingsAvatarUpload').value = '';
+            
+            // 如果当前是自定义头像（URL格式），显示预览
+            if (user.avatar.startsWith('/uploads/') || user.avatar.startsWith('http')) {
+                document.getElementById('settingsAvatarPreview').innerHTML = 
+                    `<img src="${API_BASE_URL.replace('/api', '')}${user.avatar}" class="w-full h-full object-cover">`;
+                uploadedAvatarSettings = user.avatar;
+            } else {
+                // 重置预览
+                document.getElementById('settingsAvatarPreview').innerHTML = '<i class="fas fa-image text-gray-400 text-2xl"></i>';
+            }
+            
+            // 设置当前头像为选中状态（如果是预设头像）
+            selectedAvatarSettings = user.avatar;
+            document.querySelectorAll('.avatar-option-settings').forEach(opt => {
+                opt.classList.remove('ring-4', 'ring-fish-400', 'ring-rabbit-400', 'ring-purple-400', 'ring-green-400', 'ring-yellow-400', 'ring-pink-400');
+            });
+            
+            const currentAvatarEl = document.querySelector(`.avatar-option-settings[data-avatar="${user.avatar}"]`);
+            if (currentAvatarEl) {
+                currentAvatarEl.classList.add('ring-4');
+                const ringColor = {
+                    fish: 'ring-fish-400', rabbit: 'ring-rabbit-400', star: 'ring-purple-400',
+                    leaf: 'ring-green-400', sun: 'ring-yellow-400', cloud: 'ring-pink-400'
+                }[user.avatar];
+                currentAvatarEl.classList.add(ringColor);
+            }
+        }
+
+        function closeUserSettingsModal() {
+            document.getElementById('userSettingsModal').classList.add('hidden');
+        }
+
+        async function saveUserSettings() {
+            const user = getUserInfo();
+            if (!user) return;
+
+            // 确定使用哪个头像（上传的优先）
+            const avatar = uploadedAvatarSettings || selectedAvatarSettings;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/users/${user.id}/avatar`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ avatar: avatar })
+                });
+
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || '修改头像失败');
+                }
+
+                // 更新本地用户信息
+                saveUserToLocal(data.user);
+                updateUserUI();
+                closeUserSettingsModal();
+                showToast('头像修改成功！', 'success');
+                
+                // 刷新留言列表
+                await loadMessages();
+            } catch (error) {
+                console.error('修改头像失败:', error);
+                showToast(error.message || '修改头像失败', 'error');
+            }
+        }
+
+        // ========== 登出 ==========
+        function logout() {
+            if (confirm('确定要退出登录吗？')) {
+                clearUserInfo();
+                updateUserUI();
+                showToast('已退出登录', 'success');
+                loadMessages();
+            }
+        }
+
+        // ========== 发表留言相关 ==========
         // 打开发表留言弹窗
         function openPostModal() {
+            const user = getUserInfo();
+            
+            // 检查是否登录
+            if (!user) {
+                showToast('请先登录才能发表留言', 'error');
+                setTimeout(() => {
+                    openLoginModal();
+                }, 1000);
+                return;
+            }
+            
             document.getElementById('postModal').classList.remove('hidden');
             document.getElementById('messageContent').value = '';
             document.getElementById('charCount').textContent = '0';
-            
-            // 如果已有用户信息，隐藏设置区
-            const user = getUserInfo();
-            if (user) {
-                document.getElementById('userSetup').classList.add('hidden');
-                selectedAvatar = user.avatar;
-            } else {
-                document.getElementById('userSetup').classList.remove('hidden');
-                // 默认选中第一个头像
-                document.querySelector('.avatar-option').click();
-            }
         }
 
         // 关闭发表留言弹窗
@@ -313,17 +891,14 @@
             }
 
             try {
-                let user = getUserInfo();
+                const user = getUserInfo();
                 
-                // 如果没有用户信息，需要先设置
+                // 再次检查登录状态
                 if (!user) {
-                    const nickname = document.getElementById('nicknameInput').value.trim();
-                    if (!nickname) {
-                        showToast('请输入昵称', 'error');
-                        return;
-                    }
-                    // 先注册用户
-                    user = await saveUserInfo(nickname, selectedAvatar);
+                    showToast('请先登录', 'error');
+                    closePostModal();
+                    openLoginModal();
+                    return;
                 }
 
                 // 提交留言到后端
@@ -381,16 +956,13 @@
 
                 messageList.innerHTML = messages.map(msg => {
                     const isOwn = user && user.id === msg.user_id;
-                    const avatarConfig = AVATAR_CONFIG[msg.avatar] || AVATAR_CONFIG.fish;
                     const timeStr = formatTime(new Date(msg.created_at).getTime());
 
                     return `
                         <div class="message-card bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-5 border border-gray-100">
                             <div class="flex items-start gap-4">
                                 <!-- 头像 -->
-                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md">
-                                    <i class="fas ${avatarConfig.icon} text-white text-xl"></i>
-                                </div>
+                                ${renderAvatar(msg.avatar)}
                                 
                                 <!-- 内容区 -->
                                 <div class="flex-grow min-w-0">

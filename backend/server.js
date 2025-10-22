@@ -17,12 +17,18 @@ app.use((req, res, next) => {
     next();
 });
 
+// 静态文件服务 - 提供上传的图片访问
+const path = require('path');
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // 路由
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/users');
+const uploadRoutes = require('./routes/upload');
 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // 健康检查
 app.get('/health', (req, res) => {
