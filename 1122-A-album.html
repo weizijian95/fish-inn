@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>甜美相册 - 记录美好瞬间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fish: {
+                            50: '#F0F7FF',
+                            100: '#E0F0FF',
+                            300: '#99CCF3',
+                            400: '#66B3E8',
+                        },
+                        rabbit: {
+                            50: '#FFF5F9',
+                            100: '#FFEFF6',
+                            300: '#FFC2D1',
+                            400: '#FFB0C4',
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Arial Rounded MT Bold"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @layer utilities {
+            .bg-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffc2d1' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Ccircle cx='50' cy='10' r='2'/%3E%3Ccircle cx='10' cy='50' r='2'/%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .photo-item {
+                transition: all 0.3s ease;
+            }
+            .photo-item:hover {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-rabbit-50 via-white to-fish-50 bg-pattern min-h-screen">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1.5 bg-gradient-to-r from-rabbit-400 via-fish-300 to-rabbit-300"></div>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- 头部区域 -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-rabbit-100 to-fish-100 mb-4 shadow-lg">
+                <i class="fas fa-images text-5xl text-rabbit-400"></i>
+            </div>
+            <h1 class="text-4xl font-cute font-bold bg-gradient-to-r from-rabbit-400 to-fish-400 bg-clip-text text-transparent mb-2">
+                甜美相册
+            </h1>
+            <p class="text-gray-600 text-lg">
+                📷 记录美好瞬间 📷
+            </p>
+        </div>
+
+        <!-- 用户信息栏 -->
+        <div id="userInfo" class="mb-6 hidden">
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-md p-4 flex items-center justify-between border border-rabbit-200">
+                <div class="flex items-center gap-3">
+                    <img id="userAvatar" src="" alt="头像" class="w-12 h-12 rounded-full border-2 border-rabbit-300">
+                    <div>
+                        <p class="font-medium text-gray-800" id="userNickname"></p>
+                        <p class="text-sm text-gray-500">欢迎来到相册</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="text-sm text-gray-500 hover:text-rabbit-400 transition-colors">
+                    <i class="fas fa-sign-out-alt mr-1"></i>退出
+                </button>
+            </div>
+        </div>
+
+        <!-- 未登录提示 -->
+        <div id="loginPrompt" class="mb-6 hidden">
+            <div class="bg-gradient-to-r from-rabbit-100/50 to-fish-100/50 backdrop-blur-sm rounded-xl shadow-md p-6 text-center border border-rabbit-200">
+                <i class="fas fa-lock text-4xl text-rabbit-400 mb-3"></i>
+                <p class="text-gray-700 mb-4">请先登录才能上传和管理照片哦~ 💕</p>
+                <a href="1122.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-2 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>去登录</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 上传照片区域 -->
+        <div id="uploadSection" class="mb-8 hidden">
+            <div class="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-rabbit-200">
+                <h2 class="text-xl font-cute font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    <i class="fas fa-cloud-upload-alt text-rabbit-400"></i>
+                    上传照片
+                </h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">照片名称</label>
+                        <input type="text" id="photoName" placeholder="给照片起个名字..." 
+                            class="w-full px-4 py-2 border border-rabbit-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rabbit-400 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">选择照片</label>
+                        <input type="file" id="photoFile" accept="image/*" 
+                            class="w-full px-4 py-2 border border-rabbit-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rabbit-400 focus:border-transparent">
+                    </div>
+                    
+                    <button onclick="uploadPhoto()" 
+                        class="w-full bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                        <i class="fas fa-upload mr-2"></i>上传照片
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 照片展示区域 -->
+        <div class="mb-6">
+            <h2 class="text-xl font-cute font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <i class="fas fa-photo-film text-rabbit-400"></i>
+                相册照片
+            </h2>
+        </div>
+
+        <!-- 照片网格 -->
+        <div id="photoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 照片将通过 JavaScript 动态加载 -->
+        </div>
+
+        <!-- 空状态提示 -->
+        <div id="emptyState" class="text-center py-12 hidden">
+            <i class="fas fa-image text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 text-lg">还没有照片，快来上传第一张吧~ 📸</p>
+        </div>
+
+        <!-- 返回按钮 -->
+        <div class="flex justify-center gap-4 mt-8">
+            <a href="1122-A.html" class="inline-flex items-center gap-2 bg-white hover:bg-rabbit-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-rabbit-100 hover:shadow-md">
+                <i class="fas fa-arrow-left"></i>
+                <span>返回客厅</span>
+            </a>
+        </div>
+    </main>
+
+    <!-- 查看照片大图模态框 -->
+    <div id="photoModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4" onclick="closeModal()">
+        <div class="relative max-w-4xl max-h-[90vh] bg-white rounded-xl overflow-hidden" onclick="event.stopPropagation()">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center text-gray-800 z-10 shadow-lg transition-all">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="modalImage" src="" alt="" class="w-full h-full object-contain">
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
+                <h3 id="modalTitle" class="text-xl font-bold mb-2"></h3>
+                <p id="modalInfo" class="text-sm opacity-90"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let currentUser = null;
+
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', async () => {
+            await checkLoginStatus();
+            await loadPhotos();
+        });
+
+        // 检查登录状态
+        async function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                document.getElementById('loginPrompt').classList.remove('hidden');
+                return false;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    currentUser = await response.json();
+                    document.getElementById('userInfo').classList.remove('hidden');
+                    document.getElementById('uploadSection').classList.remove('hidden');
+                    document.getElementById('userNickname').textContent = currentUser.nickname;
+                    document.getElementById('userAvatar').src = currentUser.avatar;
+                    return true;
+                } else {
+                    localStorage.removeItem('token');
+                    document.getElementById('loginPrompt').classList.remove('hidden');
+                    return false;
+                }
+            } catch (error) {
+                console.error('检查登录状态失败:', error);
+                document.getElementById('loginPrompt').classList.remove('hidden');
+                return false;
+            }
+        }
+
+        // 上传照片
+        async function uploadPhoto() {
+            const photoName = document.getElementById('photoName').value.trim();
+            const photoFile = document.getElementById('photoFile').files[0];
+
+            if (!photoName) {
+                alert('请输入照片名称');
+                return;
+            }
+
+            if (!photoFile) {
+                alert('请选择要上传的照片');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('请先登录');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('photo', photoFile);
+            formData.append('name', photoName);
+
+            try {
+                const response = await fetch(`${API_BASE}/photos/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert('照片上传成功！');
+                    document.getElementById('photoName').value = '';
+                    document.getElementById('photoFile').value = '';
+                    await loadPhotos();
+                } else {
+                    alert(result.error || '上传失败');
+                }
+            } catch (error) {
+                console.error('上传失败:', error);
+                alert('上传失败，请重试');
+            }
+        }
+
+        // 加载照片
+        async function loadPhotos() {
+            try {
+                const response = await fetch(`${API_BASE}/photos`);
+                const photos = await response.json();
+
+                const photoGrid = document.getElementById('photoGrid');
+                const emptyState = document.getElementById('emptyState');
+
+                if (photos.length === 0) {
+                    photoGrid.innerHTML = '';
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                photoGrid.innerHTML = photos.map(photo => `
+                    <div class="photo-item bg-white rounded-xl shadow-lg overflow-hidden border border-rabbit-100">
+                        <div class="aspect-square overflow-hidden cursor-pointer" onclick="openModal(${photo.id})">
+                            <img src="${photo.photo_url}" alt="${photo.name}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-gray-800 mb-1 truncate">${photo.name}</h3>
+                            <div class="flex items-center gap-2 mb-2">
+                                <img src="${photo.avatar}" alt="${photo.nickname}" class="w-6 h-6 rounded-full">
+                                <span class="text-sm text-gray-600">${photo.nickname}</span>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3">
+                                <i class="far fa-clock mr-1"></i>${formatTime(photo.created_at)}
+                            </p>
+                            ${currentUser && currentUser.id === photo.user_id ? `
+                                <button onclick="deletePhoto(${photo.id})" 
+                                    class="w-full bg-red-50 hover:bg-red-100 text-red-600 py-2 px-4 rounded-lg transition-colors text-sm">
+                                    <i class="fas fa-trash-alt mr-1"></i>删除照片
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('加载照片失败:', error);
+            }
+        }
+
+        // 删除照片
+        async function deletePhoto(photoId) {
+            if (!confirm('确定要删除这张照片吗？')) {
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('请先登录');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/photos/${photoId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('照片已删除');
+                    await loadPhotos();
+                } else {
+                    const result = await response.json();
+                    alert(result.error || '删除失败');
+                }
+            } catch (error) {
+                console.error('删除失败:', error);
+                alert('删除失败，请重试');
+            }
+        }
+
+        // 打开大图模态框
+        async function openModal(photoId) {
+            try {
+                const response = await fetch(`${API_BASE}/photos/${photoId}`);
+                const photo = await response.json();
+
+                document.getElementById('modalImage').src = photo.photo_url;
+                document.getElementById('modalTitle').textContent = photo.name;
+                document.getElementById('modalInfo').textContent = `${photo.nickname} · ${formatTime(photo.created_at)}`;
+                document.getElementById('photoModal').classList.remove('hidden');
+            } catch (error) {
+                console.error('加载照片详情失败:', error);
+            }
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('photoModal').classList.add('hidden');
+        }
+
+        // 格式化时间
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            const diffMinutes = Math.floor(diff / 60000);
+            const diffHours = Math.floor(diff / 3600000);
+            const diffDays = Math.floor(diff / 86400000);
+
+            if (diffMinutes < 1) return '刚刚';
+            if (diffMinutes < 60) return `${diffMinutes}分钟前`;
+            if (diffHours < 24) return `${diffHours}小时前`;
+            if (diffDays < 7) return `${diffDays}天前`;
+            
+            return date.toLocaleDateString('zh-CN');
+        }
+
+        // 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
+

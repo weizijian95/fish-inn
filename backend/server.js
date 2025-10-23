@@ -25,10 +25,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/users');
 const uploadRoutes = require('./routes/upload');
+const photoRoutes = require('./routes/photos');
 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/photos', photoRoutes);
 
 // 健康检查
 app.get('/health', (req, res) => {
