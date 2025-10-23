@@ -173,48 +173,49 @@
         let currentUser = null;
 
         // 页面加载时初始化
-        window.addEventListener('DOMContentLoaded', async () => {
-            await checkLoginStatus();
-            await loadPhotos();
+        window.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+            loadPhotos();
         });
 
         // 监听登录成功事件
-        window.addEventListener('userLoggedIn', async () => {
-            await checkLoginStatus();
-            await loadPhotos();
+        window.addEventListener('userLoggedIn', () => {
+            checkLoginStatus();
+            loadPhotos();
         });
 
         // 检查登录状态
-        async function checkLoginStatus() {
+        function checkLoginStatus() {
             const token = localStorage.getItem('token');
+            const userStr = localStorage.getItem('user');
             
-            if (!token) {
+            if (!token || !userStr) {
+                // 未登录状态
                 document.getElementById('loginPrompt').classList.remove('hidden');
+                document.getElementById('userInfo').classList.add('hidden');
+                document.getElementById('uploadSection').classList.add('hidden');
                 return false;
             }
 
             try {
-                const response = await fetch(`${API_BASE}/users/profile`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (response.ok) {
-                    currentUser = await response.json();
-                    document.getElementById('userInfo').classList.remove('hidden');
-                    document.getElementById('uploadSection').classList.remove('hidden');
-                    document.getElementById('userNickname').textContent = currentUser.nickname;
-                    document.getElementById('userAvatar').src = currentUser.avatar;
-                    return true;
-                } else {
-                    localStorage.removeItem('token');
-                    document.getElementById('loginPrompt').classList.remove('hidden');
-                    return false;
-                }
+                currentUser = JSON.parse(userStr);
+                // 已登录状态
+                // 隐藏登录提示
+                document.getElementById('loginPrompt').classList.add('hidden');
+                // 显示用户信息和上传区域
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('uploadSection').classList.remove('hidden');
+                document.getElementById('userNickname').textContent = currentUser.nickname;
+                document.getElementById('userAvatar').src = currentUser.avatar;
+                return true;
             } catch (error) {
-                console.error('检查登录状态失败:', error);
+                console.error('解析用户信息失败:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                // 显示登录提示
                 document.getElementById('loginPrompt').classList.remove('hidden');
+                document.getElementById('userInfo').classList.add('hidden');
+                document.getElementById('uploadSection').classList.add('hidden');
                 return false;
             }
         }
