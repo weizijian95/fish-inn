@@ -130,6 +130,9 @@
         <p>✨ 愿每一天都闪闪发光 ✨</p>
     </footer>
 
+    <!-- 引入登录模块 -->
+    <script src="auth-modal.js"></script>
+
     <script>
         // 初始化页面
         window.addEventListener('load', () => {
@@ -160,7 +163,7 @@
         }
         
         function goToLogin() {
-            window.location.href = '1122-A-board.html?returnTo=' + encodeURIComponent(window.location.pathname);
+            openAuthModal('login');
         }
         
         function logout() {

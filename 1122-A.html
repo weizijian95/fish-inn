@@ -186,6 +186,9 @@
         <p>🌟 我们的小客厅，充满爱与温暖 🌟</p>
     </footer>
 
+    <!-- 引入登录模块 -->
+    <script src="auth-modal.js"></script>
+
     <script>
         // 初始化页面
         window.addEventListener('load', () => {
@@ -215,7 +218,7 @@
         }
         
         function goToLogin() {
-            window.location.href = '1122-A-board.html?returnTo=' + encodeURIComponent(window.location.pathname);
+            openAuthModal('login');
         }
         
         function logout() {
