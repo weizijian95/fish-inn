@@ -1,7 +1,7 @@
 // 通用登录/注册模块
 // 使用方法：在页面中引入此文件，然后调用 openAuthModal() 打开登录弹窗
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://124.221.182.238:3000/api';
 
 // 创建登录/注册弹窗HTML
 function createAuthModal() {
