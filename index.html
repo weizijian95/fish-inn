@@ -51,6 +51,30 @@
     <!-- 顶部装饰 -->
     <div class="w-full h-2 bg-gradient-to-r from-primary to-secondary"></div>
 
+    <!-- 用户状态栏 -->
+    <div class="container mx-auto px-6 py-4">
+        <div class="flex justify-end">
+            <!-- 未登录状态 -->
+            <div id="notLoggedIn" class="hidden">
+                <button onclick="goToLogin()" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-gray-200">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>登录/注册</span>
+                </button>
+            </div>
+            
+            <!-- 已登录状态 -->
+            <div id="loggedIn" class="hidden flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-white rounded-full py-2 px-4 shadow-sm border border-gray-200">
+                    <img id="userAvatar" src="" alt="头像" class="w-8 h-8 rounded-full">
+                    <span id="userNickname" class="text-gray-700 font-medium"></span>
+                </div>
+                <button onclick="logout()" class="text-gray-500 hover:text-gray-700 transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 主内容区 -->
     <main class="flex-grow flex flex-col items-center justify-center px-6 py-12">
         <!-- 标题区域 -->
@@ -104,6 +128,45 @@
         // 获取元素
         const roomInput = document.getElementById('roomInput');
         const submitBtn = document.getElementById('submitBtn');
+        
+        // 初始化页面
+        window.addEventListener('DOMContentLoaded', () => {
+            updateUserUI();
+            roomInput.focus();
+        });
+        
+        // 用户管理函数
+        function getUserInfo() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function updateUserUI() {
+            const user = getUserInfo();
+            const notLoggedIn = document.getElementById('notLoggedIn');
+            const loggedIn = document.getElementById('loggedIn');
+            
+            if (user) {
+                notLoggedIn.classList.add('hidden');
+                loggedIn.classList.remove('hidden');
+                document.getElementById('userNickname').textContent = user.nickname;
+                document.getElementById('userAvatar').src = user.avatar;
+            } else {
+                notLoggedIn.classList.remove('hidden');
+                loggedIn.classList.add('hidden');
+            }
+        }
+        
+        function goToLogin() {
+            window.location.href = '1122-A-board.html?returnTo=' + encodeURIComponent(window.location.pathname);
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            updateUserUI();
+            showToast('已退出登录');
+        }
         
         // 处理输入跳转
         function handleRoomNavigation() {
@@ -163,11 +226,6 @@
             if (e.key === 'Enter') {
                 handleRoomNavigation();
             }
-        });
-        
-        // 自动聚焦输入框
-        window.addEventListener('load', () => {
-            roomInput.focus();
         });
     </script>
 </body>

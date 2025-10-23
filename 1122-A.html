@@ -60,6 +60,30 @@
     <!-- 顶部装饰条 -->
     <div class="w-full h-1.5 bg-gradient-to-r from-fish-400 via-rabbit-300 to-fish-300"></div>
 
+    <!-- 用户状态栏 -->
+    <div class="container mx-auto px-6 py-4 max-w-3xl">
+        <div class="flex justify-end">
+            <!-- 未登录状态 -->
+            <div id="notLoggedIn" class="hidden">
+                <button onclick="goToLogin()" class="inline-flex items-center gap-2 bg-white/80 hover:bg-white text-fish-400 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-fish-200">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>登录/注册</span>
+                </button>
+            </div>
+            
+            <!-- 已登录状态 -->
+            <div id="loggedIn" class="hidden flex items-center gap-3">
+                <div class="flex items-center gap-2 bg-white/80 rounded-full py-2 px-4 shadow-sm border border-fish-200">
+                    <img id="userAvatar" src="" alt="头像" class="w-8 h-8 rounded-full">
+                    <span id="userNickname" class="text-gray-700 font-medium"></span>
+                </div>
+                <button onclick="logout()" class="text-gray-500 hover:text-fish-400 transition-colors">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 主内容区 -->
     <main class="flex-grow container mx-auto px-6 py-10 max-w-3xl">
         <!-- 客厅标题 -->
@@ -161,6 +185,45 @@
     <footer class="py-4 text-center text-gray-500 text-sm">
         <p>🌟 我们的小客厅，充满爱与温暖 🌟</p>
     </footer>
+
+    <script>
+        // 初始化页面
+        window.addEventListener('load', () => {
+            updateUserUI();
+        });
+        
+        // 用户管理函数
+        function getUserInfo() {
+            const userStr = localStorage.getItem('user');
+            return userStr ? JSON.parse(userStr) : null;
+        }
+        
+        function updateUserUI() {
+            const user = getUserInfo();
+            const notLoggedIn = document.getElementById('notLoggedIn');
+            const loggedIn = document.getElementById('loggedIn');
+            
+            if (user) {
+                notLoggedIn.classList.add('hidden');
+                loggedIn.classList.remove('hidden');
+                document.getElementById('userNickname').textContent = user.nickname;
+                document.getElementById('userAvatar').src = user.avatar;
+            } else {
+                notLoggedIn.classList.remove('hidden');
+                loggedIn.classList.add('hidden');
+            }
+        }
+        
+        function goToLogin() {
+            window.location.href = '1122-A-board.html?returnTo=' + encodeURIComponent(window.location.pathname);
+        }
+        
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            updateUserUI();
+        }
+    </script>
 </body>
 </html>
 
