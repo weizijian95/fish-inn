@@ -374,6 +374,15 @@
             loadMessages();
             initEventListeners();
             updateUserUI();
+            
+            // 如果有返回地址参数且未登录，自动打开登录弹窗
+            const urlParams = new URLSearchParams(window.location.search);
+            const returnTo = urlParams.get('returnTo');
+            if (returnTo && !getUserInfo()) {
+                setTimeout(() => {
+                    openLoginModal();
+                }, 300);
+            }
         });
 
         // 更新用户界面
@@ -707,8 +716,19 @@
                 closeLoginModal();
                 showToast('登录成功！', 'success');
                 
-                // 刷新留言列表
-                await loadMessages();
+                // 检查是否有返回地址
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnTo = urlParams.get('returnTo');
+                
+                if (returnTo) {
+                    // 如果有返回地址，跳转回去
+                    setTimeout(() => {
+                        window.location.href = returnTo;
+                    }, 500);
+                } else {
+                    // 否则刷新留言列表
+                    await loadMessages();
+                }
             } catch (error) {
                 console.error('登录失败:', error);
                 showToast(error.message || '登录失败', 'error');
@@ -771,8 +791,19 @@
                 closeRegisterModal();
                 showToast('注册成功！', 'success');
                 
-                // 刷新留言列表
-                await loadMessages();
+                // 检查是否有返回地址
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnTo = urlParams.get('returnTo');
+                
+                if (returnTo) {
+                    // 如果有返回地址，跳转回去
+                    setTimeout(() => {
+                        window.location.href = returnTo;
+                    }, 500);
+                } else {
+                    // 否则刷新留言列表
+                    await loadMessages();
+                }
             } catch (error) {
                 console.error('注册失败:', error);
                 showToast(error.message || '注册失败', 'error');
