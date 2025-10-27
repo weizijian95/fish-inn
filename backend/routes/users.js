@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
+const jwt = require('jsonwebtoken');
 
 // 用户注册（新接口 - 需要用户名密码）
 router.post('/register', async (req, res) => {
@@ -71,9 +72,20 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ error: '用户名或密码错误' });
         }
 
+        const user = rows[0];
+        const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+        
+        // 生成 JWT token
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
         res.json({
             success: true,
-            user: rows[0]
+            user: user,
+            token: token
         });
     } catch (error) {
         console.error('登录失败:', error);
@@ -102,13 +114,24 @@ router.post('/quick-register', async (req, res) => {
             [nickname, avatar]
         );
 
+        const userId = result.insertId;
+        const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+        
+        // 生成 JWT token
+        const token = jwt.sign(
+            { id: userId, username: null },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+        );
+
         res.json({
             success: true,
             user: {
-                id: result.insertId,
+                id: userId,
                 nickname,
                 avatar
-            }
+            },
+            token: token
         });
     } catch (error) {
         console.error('快速注册失败:', error);
