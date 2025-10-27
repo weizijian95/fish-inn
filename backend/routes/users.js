@@ -82,6 +82,8 @@ router.post('/login', async (req, res) => {
             { expiresIn: '24h' }
         );
 
+        console.log('登录成功，生成token:', { userId: user.id, username: user.username });
+
         res.json({
             success: true,
             user: user,
@@ -123,6 +125,8 @@ router.post('/quick-register', async (req, res) => {
             JWT_SECRET,
             { expiresIn: '24h' }
         );
+
+        console.log('快速注册成功，生成token:', { userId: userId, username: null });
 
         res.json({
             success: true,

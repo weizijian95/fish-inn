@@ -58,8 +58,10 @@ function authenticateToken(req, res, next) {
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
+            console.error('JWT验证失败:', err.message);
             return res.status(403).json({ error: '无效的令牌' });
         }
+        console.log('JWT验证成功，用户信息:', user);
         req.user = user;
         next();
     });
