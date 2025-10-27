@@ -49,11 +49,12 @@ app.use((err, req, res, next) => {
 });
 
 // 启动服务器
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('=================================');
     console.log(`🚀 服务器启动成功！`);
     console.log(`📡 监听端口: ${PORT}`);
     console.log(`🌐 本地访问: http://localhost:${PORT}`);
+    console.log(`🌐 网络访问: http://0.0.0.0:${PORT}`);
     console.log(`🏥 健康检查: http://localhost:${PORT}/health`);
     console.log('=================================');
 });
