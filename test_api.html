@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试</title>
+</head>
+<body>
+    <h1>API测试页面</h1>
+    <button onclick="testHealth()">测试健康检查</button>
+    <button onclick="testLogin()">测试登录</button>
+    <div id="result"></div>
+
+    <script>
+        async function testHealth() {
+            try {
+                const response = await fetch('http://localhost:3000/health');
+                const data = await response.text();
+                document.getElementById('result').innerHTML = '<pre>' + data + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<pre>错误: ' + error.message + '</pre>';
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:3000/api/users/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: 'fish1',
+                        password: 'fish1'
+                    })
+                });
+                const data = await response.text();
+                document.getElementById('result').innerHTML = '<pre>' + data + '</pre>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = '<pre>错误: ' + error.message + '</pre>';
+            }
+        }
+    </script>
+</body>
+</html>

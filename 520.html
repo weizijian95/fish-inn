@@ -352,7 +352,7 @@
         async function checkUserPermissions() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`/api/users/${currentUser.id}/permissions`, {
+                const response = await fetch(`/api/exam/users/${currentUser.id}/permissions`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

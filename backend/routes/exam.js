@@ -42,7 +42,7 @@ const checkAdminPermission = async (req, res, next) => {
 };
 
 // 获取用户权限
-router.get('/users/:id/permissions', authenticateToken, async (req, res) => {
+router.get('/exam/users/:id/permissions', authenticateToken, async (req, res) => {
     try {
         const { id } = req.params;
         

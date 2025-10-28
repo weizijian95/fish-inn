@@ -233,7 +233,7 @@
         async function checkBedroomPermission(userId) {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`/api/users/${userId}/permissions`, {
+                const response = await fetch(`/api/exam/users/${userId}/permissions`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
