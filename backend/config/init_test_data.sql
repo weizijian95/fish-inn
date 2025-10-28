@@ -1,6 +1,21 @@
 -- 初始化测试数据
 USE fish_db;
 
+-- 确保fish1用户存在并拥有所有权限
+INSERT IGNORE INTO users (username, password, nickname, avatar) 
+VALUES ('fish1', 'fish1', 'Fish1', 'https://api.dicebear.com/7.x/avataaars/svg?seed=fish1');
+
+-- 为fish1用户授予所有权限
+INSERT IGNORE INTO user_permissions (user_id, permission)
+SELECT u.id, '前往1122卧室'
+FROM users u 
+WHERE u.username = 'fish1';
+
+INSERT IGNORE INTO user_permissions (user_id, permission)
+SELECT u.id, '客栈主人'
+FROM users u 
+WHERE u.username = 'fish1';
+
 -- 插入一些测试题目
 INSERT INTO exam_questions (question, option_a, option_b, option_c, option_d, correct_answer) VALUES
 ('520房间的主要功能是什么？', '存储文件', '爱的测试', '游戏娱乐', '聊天交流', 'B'),

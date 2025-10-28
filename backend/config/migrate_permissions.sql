@@ -57,3 +57,17 @@ ON DUPLICATE KEY UPDATE
 question_count = VALUES(question_count),
 bedroom_permission_score = VALUES(bedroom_permission_score),
 admin_permission_score = VALUES(admin_permission_score);
+
+-- 为fish1用户自动授予所有权限
+-- 首先检查fish1用户是否存在，如果存在则授予权限
+INSERT INTO user_permissions (user_id, permission)
+SELECT u.id, '前往1122卧室'
+FROM users u 
+WHERE u.username = 'fish1'
+ON DUPLICATE KEY UPDATE permission = permission;
+
+INSERT INTO user_permissions (user_id, permission)
+SELECT u.id, '客栈主人'
+FROM users u 
+WHERE u.username = 'fish1'
+ON DUPLICATE KEY UPDATE permission = permission;
