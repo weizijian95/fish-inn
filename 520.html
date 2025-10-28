@@ -352,7 +352,7 @@
         async function checkUserPermissions() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch(`/api/exam/users/${currentUser.id}/permissions`, {
+                const response = await fetch(`https://fish-rabbit.site/api/exam/users/${currentUser.id}/permissions`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -407,7 +407,7 @@
         async function startExam() {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('/api/exam/start', {
+                const response = await fetch('https://fish-rabbit.site/api/exam/start', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -518,7 +518,7 @@
             
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('/api/exam/submit', {
+                const response = await fetch('https://fish-rabbit.site/api/exam/submit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -647,7 +647,7 @@
             
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('/api/exam/questions', {
+                const response = await fetch('https://fish-rabbit.site/api/exam/questions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -680,7 +680,7 @@
             
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('/api/exam/settings', {
+                const response = await fetch('https://fish-rabbit.site/api/exam/settings', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
