@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>520房间 - 爱的测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- 配置专属温馨色调（粉红系） -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        love: {
+                            50: '#FFF0F5',
+                            100: '#FFE4EC',
+                            200: '#FFB3C6',
+                            300: '#FF8FA3',
+                            400: '#FF6B8A',
+                            500: '#FF477E',
+                            600: '#E63946',
+                            700: '#D62828',
+                            800: '#B71C1C',
+                        },
+                        heart: {
+                            50: '#FDF2F8',
+                            100: '#FCE7F3',
+                            200: '#FBCFE8',
+                            300: '#F9A8D4',
+                            400: '#F472B6',
+                            500: '#EC4899',
+                            600: '#DB2777',
+                            700: '#BE185D',
+                            800: '#9D174D',
+                        }
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Arial Rounded MT Bold"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        @layer utilities {
+            .bg-pattern {
+                background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff6b8a' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3Ccircle cx='10' cy='10' r='2'/%3E%3Ccircle cx='50' cy='10' r='2'/%3E%3Ccircle cx='10' cy='50' r='2'/%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            }
+            .float {
+                animation: float 3s ease-in-out infinite;
+            }
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            .bounce-slow {
+                animation: bounce-slow 2s ease-in-out infinite;
+            }
+            @keyframes bounce-slow {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-5px); }
+            }
+            .heart-beat {
+                animation: heart-beat 1.5s ease-in-out infinite;
+            }
+            @keyframes heart-beat {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-love-50 via-white to-heart-50 bg-pattern min-h-screen flex flex-col">
+    <!-- 顶部装饰条 -->
+    <div class="w-full h-1.5 bg-gradient-to-r from-love-400 via-heart-300 to-love-300"></div>
+
+    <!-- 用户状态栏 -->
+    <div class="container mx-auto px-6 py-4 max-w-4xl">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-heart text-love-400 text-2xl heart-beat"></i>
+                <span class="text-love-600 font-bold text-lg">520房间 - 爱的测试</span>
+            </div>
+            
+            <!-- 用户信息 -->
+            <div id="userInfo" class="hidden">
+                <div class="flex items-center gap-2 bg-white/80 rounded-full py-2 px-4 shadow-sm border border-love-200">
+                    <img id="userAvatar" src="" alt="头像" class="w-8 h-8 rounded-full">
+                    <span id="userNickname" class="text-gray-700 font-medium"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <main class="flex-grow container mx-auto px-6 py-10 max-w-4xl">
+        <!-- 房间标题 -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-love-100 to-heart-100 mb-4 shadow-lg">
+                <i class="fas fa-heart text-6xl text-love-400 heart-beat"></i>
+            </div>
+            <h1 class="text-[clamp(2rem,6vw,3rem)] font-cute font-bold bg-gradient-to-r from-love-400 to-heart-400 bg-clip-text text-transparent mb-2">
+                520房间
+            </h1>
+            <p class="text-gray-600 text-[clamp(1rem,3vw,1.2rem)]">
+                💕 爱的测试，考验真心的时刻 💕
+            </p>
+        </div>
+
+        <!-- 功能区域 -->
+        <div id="mainContent">
+            <!-- 客栈主人功能 -->
+            <div id="adminPanel" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- 新增题目 -->
+                    <button onclick="showAddQuestionModal()" class="bg-gradient-to-br from-love-100 to-love-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-love-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-plus-circle text-4xl text-love-400 bounce-slow"></i>
+                        </div>
+                        <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">新增题目</h3>
+                        <p class="text-gray-600 text-center text-sm">
+                            添加新的测试题目 ✨
+                        </p>
+                    </button>
+
+                    <!-- 设置考试 -->
+                    <button onclick="showExamSettingsModal()" class="bg-gradient-to-br from-heart-100 to-heart-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-heart-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-cog text-4xl text-heart-400 bounce-slow" style="animation-delay: 0.3s"></i>
+                        </div>
+                        <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">设置考试</h3>
+                        <p class="text-gray-600 text-center text-sm">
+                            配置考试规则和权限 🎯
+                        </p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 普通用户功能 -->
+            <div id="userPanel" class="text-center">
+                <div class="bg-gradient-to-r from-love-100/50 to-heart-100/50 backdrop-blur-sm rounded-2xl shadow-md p-8 mb-8 border border-love-200/30">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <i class="fas fa-graduation-cap text-love-400 text-3xl heart-beat"></i>
+                        <h3 class="text-2xl font-cute font-bold text-gray-800">参加考试</h3>
+                        <i class="fas fa-heart text-heart-400 text-3xl heart-beat"></i>
+                    </div>
+                    <p class="text-gray-700 text-lg mb-6">
+                        通过爱的测试，证明你的真心<br>
+                        <span class="text-love-400 font-medium">答对足够题目即可获得特殊权限！</span>
+                    </p>
+                    <button onclick="startExam()" class="inline-flex items-center gap-2 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <i class="fas fa-play text-xl"></i>
+                        <span class="text-lg">开始考试</span>
+                        <i class="fas fa-heart text-lg animate-pulse"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 返回按钮 -->
+            <div class="text-center">
+                <button onclick="goBack()" class="inline-flex items-center gap-2 bg-white hover:bg-love-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-love-100 hover:shadow-md">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回大堂</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 考试区域 -->
+        <div id="examArea" class="hidden">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-love-200">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-cute font-bold text-gray-800 mb-2">爱的测试</h2>
+                    <div id="examProgress" class="text-love-600 font-medium"></div>
+                </div>
+                
+                <div id="questionContainer">
+                    <!-- 题目内容将在这里动态生成 -->
+                </div>
+                
+                <div class="flex justify-center gap-4 mt-8">
+                    <button onclick="submitExam()" id="submitBtn" class="hidden inline-flex items-center gap-2 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-check"></i>
+                        <span>提交答案</span>
+                    </button>
+                    <button onclick="cancelExam()" class="inline-flex items-center gap-2 bg-gray-400 hover:bg-gray-500 text-white font-medium py-3 px-6 rounded-full transition-all duration-300">
+                        <i class="fas fa-times"></i>
+                        <span>取消考试</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="resultArea" class="hidden">
+            <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-love-200">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-cute font-bold text-gray-800 mb-4">考试结果</h2>
+                    <div id="resultContent">
+                        <!-- 结果内容将在这里显示 -->
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="goBackToMain()" class="inline-flex items-center gap-2 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-home"></i>
+                        <span>返回主页</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="py-4 text-center text-gray-500 text-sm">
+        <p>💕 520房间 - 用真心换取真爱 💕</p>
+    </footer>
+
+    <!-- 模态框 -->
+    <!-- 新增题目模态框 -->
+    <div id="addQuestionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-cute font-bold text-gray-800">新增题目</h3>
+            </div>
+            
+            <form id="addQuestionForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">题目内容</label>
+                    <textarea id="questionText" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" rows="3" placeholder="请输入题目内容..."></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">选项A</label>
+                        <input type="text" id="optionA" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项A">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">选项B</label>
+                        <input type="text" id="optionB" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项B">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">选项C</label>
+                        <input type="text" id="optionC" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项C">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">选项D</label>
+                        <input type="text" id="optionD" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项D">
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">正确答案</label>
+                    <select id="correctAnswer" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent">
+                        <option value="">请选择正确答案</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                
+                <div class="flex justify-center gap-4">
+                    <button type="button" onclick="hideAddQuestionModal()" class="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors">
+                        取消
+                    </button>
+                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-medium rounded-lg transition-all duration-300">
+                        保存题目
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 设置考试模态框 -->
+    <div id="examSettingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4">
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-cute font-bold text-gray-800">设置考试</h3>
+            </div>
+            
+            <form id="examSettingsForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">每场考试题目数量</label>
+                    <input type="number" id="questionCount" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" min="1" max="20" value="5">
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">获得"前往1122卧室"权限需要答对题目数</label>
+                    <input type="number" id="bedroomPermissionScore" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" min="1" max="20" value="4">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">获得"客栈主人"权限需要答对题目数</label>
+                    <input type="number" id="adminPermissionScore" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" min="1" max="20" value="5">
+                </div>
+                
+                <div class="flex justify-center gap-4">
+                    <button type="button" onclick="hideExamSettingsModal()" class="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors">
+                        取消
+                    </button>
+                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-medium rounded-lg transition-all duration-300">
+                        保存设置
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 引入登录模块 -->
+    <script src="auth-modal.js"></script>
+
+    <script>
+        let currentUser = null;
+        let currentExam = null;
+        let examAnswers = [];
+        let currentQuestionIndex = 0;
+
+        // 初始化页面
+        window.addEventListener('load', () => {
+            checkUserLogin();
+        });
+
+        // 检查用户登录状态
+        function checkUserLogin() {
+            const userStr = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+            
+            if (userStr && token) {
+                currentUser = JSON.parse(userStr);
+                updateUserUI();
+                checkUserPermissions();
+            } else {
+                // 未登录，跳转到登录
+                alert('请先登录后再进入520房间');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // 更新用户界面
+        function updateUserUI() {
+            if (currentUser) {
+                document.getElementById('userInfo').classList.remove('hidden');
+                document.getElementById('userNickname').textContent = currentUser.nickname;
+                document.getElementById('userAvatar').src = currentUser.avatar;
+            }
+        }
+
+        // 检查用户权限
+        async function checkUserPermissions() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/users/${currentUser.id}/permissions`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.permissions && data.permissions.includes('客栈主人')) {
+                        // 显示管理员面板
+                        document.getElementById('adminPanel').classList.remove('hidden');
+                    } else {
+                        // 显示普通用户面板
+                        document.getElementById('userPanel').classList.remove('hidden');
+                    }
+                } else {
+                    // 显示普通用户面板
+                    document.getElementById('userPanel').classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('检查权限失败:', error);
+                // 显示普通用户面板
+                document.getElementById('userPanel').classList.remove('hidden');
+            }
+        }
+
+        // 显示新增题目模态框
+        function showAddQuestionModal() {
+            document.getElementById('addQuestionModal').classList.remove('hidden');
+            document.getElementById('addQuestionModal').classList.add('flex');
+        }
+
+        // 隐藏新增题目模态框
+        function hideAddQuestionModal() {
+            document.getElementById('addQuestionModal').classList.add('hidden');
+            document.getElementById('addQuestionModal').classList.remove('flex');
+            document.getElementById('addQuestionForm').reset();
+        }
+
+        // 显示设置考试模态框
+        function showExamSettingsModal() {
+            document.getElementById('examSettingsModal').classList.remove('hidden');
+            document.getElementById('examSettingsModal').classList.add('flex');
+        }
+
+        // 隐藏设置考试模态框
+        function hideExamSettingsModal() {
+            document.getElementById('examSettingsModal').classList.add('hidden');
+            document.getElementById('examSettingsModal').classList.remove('flex');
+        }
+
+        // 开始考试
+        async function startExam() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/exam/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentExam = data.exam;
+                    examAnswers = [];
+                    currentQuestionIndex = 0;
+                    
+                    // 显示考试区域
+                    document.getElementById('mainContent').classList.add('hidden');
+                    document.getElementById('examArea').classList.remove('hidden');
+                    
+                    showQuestion();
+                } else {
+                    const error = await response.json();
+                    alert('开始考试失败：' + error.error);
+                }
+            } catch (error) {
+                console.error('开始考试失败:', error);
+                alert('开始考试失败，请稍后重试');
+            }
+        }
+
+        // 显示题目
+        function showQuestion() {
+            const question = currentExam.questions[currentQuestionIndex];
+            const progress = `第 ${currentQuestionIndex + 1} 题 / 共 ${currentExam.questions.length} 题`;
+            
+            document.getElementById('examProgress').textContent = progress;
+            
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">${question.question}</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 border border-love-200 rounded-lg hover:bg-love-50 cursor-pointer">
+                            <input type="radio" name="answer" value="A" class="mr-3 text-love-400">
+                            <span>A. ${question.optionA}</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-love-200 rounded-lg hover:bg-love-50 cursor-pointer">
+                            <input type="radio" name="answer" value="B" class="mr-3 text-love-400">
+                            <span>B. ${question.optionB}</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-love-200 rounded-lg hover:bg-love-50 cursor-pointer">
+                            <input type="radio" name="answer" value="C" class="mr-3 text-love-400">
+                            <span>C. ${question.optionC}</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-love-200 rounded-lg hover:bg-love-50 cursor-pointer">
+                            <input type="radio" name="answer" value="D" class="mr-3 text-love-400">
+                            <span>D. ${question.optionD}</span>
+                        </label>
+                    </div>
+                </div>
+            `;
+            
+            // 显示下一题按钮或提交按钮
+            if (currentQuestionIndex < currentExam.questions.length - 1) {
+                document.getElementById('submitBtn').classList.add('hidden');
+                if (!document.getElementById('nextBtn')) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.id = 'nextBtn';
+                    nextBtn.className = 'inline-flex items-center gap-2 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl';
+                    nextBtn.innerHTML = '<i class="fas fa-arrow-right"></i><span>下一题</span>';
+                    nextBtn.onclick = nextQuestion;
+                    document.querySelector('#examArea .flex.justify-center.gap-4.mt-8').appendChild(nextBtn);
+                }
+            } else {
+                document.getElementById('submitBtn').classList.remove('hidden');
+                const nextBtn = document.getElementById('nextBtn');
+                if (nextBtn) nextBtn.remove();
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                alert('请选择一个答案');
+                return;
+            }
+            
+            examAnswers.push({
+                questionId: currentExam.questions[currentQuestionIndex].id,
+                answer: selectedAnswer.value
+            });
+            
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        // 提交考试
+        async function submitExam() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (!selectedAnswer) {
+                alert('请选择一个答案');
+                return;
+            }
+            
+            examAnswers.push({
+                questionId: currentExam.questions[currentQuestionIndex].id,
+                answer: selectedAnswer.value
+            });
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/exam/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        examId: currentExam.id,
+                        answers: examAnswers
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    showExamResult(data);
+                } else {
+                    const error = await response.json();
+                    alert('提交考试失败：' + error.error);
+                }
+            } catch (error) {
+                console.error('提交考试失败:', error);
+                alert('提交考试失败，请稍后重试');
+            }
+        }
+
+        // 显示考试结果
+        function showExamResult(result) {
+            document.getElementById('examArea').classList.add('hidden');
+            document.getElementById('resultArea').classList.remove('hidden');
+            
+            const container = document.getElementById('resultContent');
+            let html = `
+                <div class="mb-6">
+                    <div class="text-3xl font-bold text-love-400 mb-2">${result.score} / ${result.totalQuestions}</div>
+                    <div class="text-gray-600 mb-4">正确率：${Math.round(result.score / result.totalQuestions * 100)}%</div>
+            `;
+            
+            if (result.newPermissions && result.newPermissions.length > 0) {
+                html += `
+                    <div class="bg-gradient-to-r from-love-100 to-heart-100 rounded-lg p-4 mb-4">
+                        <div class="text-lg font-bold text-love-600 mb-2">🎉 恭喜获得新权限！</div>
+                        <div class="text-love-500">${result.newPermissions.join('、')}</div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="text-left">
+                    <h4 class="font-bold text-gray-800 mb-3">详细结果：</h4>
+                    <div class="space-y-3">
+            `;
+            
+            result.details.forEach((detail, index) => {
+                const isCorrect = detail.isCorrect;
+                const bgColor = isCorrect ? 'bg-green-50' : 'bg-red-50';
+                const textColor = isCorrect ? 'text-green-600' : 'text-red-600';
+                const icon = isCorrect ? 'fas fa-check-circle' : 'fas fa-times-circle';
+                
+                html += `
+                    <div class="${bgColor} p-3 rounded-lg">
+                        <div class="flex items-center mb-2">
+                            <i class="${icon} ${textColor} mr-2"></i>
+                            <span class="font-medium">第 ${index + 1} 题</span>
+                        </div>
+                        <div class="text-sm text-gray-700 mb-1">${detail.question}</div>
+                        <div class="text-sm">
+                            <span class="text-gray-600">你的答案：</span>
+                            <span class="${textColor}">${detail.userAnswer}</span>
+                        </div>
+                        ${!isCorrect ? `
+                            <div class="text-sm">
+                                <span class="text-gray-600">正确答案：</span>
+                                <span class="text-green-600">${detail.correctAnswer}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = html;
+        }
+
+        // 取消考试
+        function cancelExam() {
+            if (confirm('确定要取消考试吗？')) {
+                goBackToMain();
+            }
+        }
+
+        // 返回主页
+        function goBackToMain() {
+            document.getElementById('examArea').classList.add('hidden');
+            document.getElementById('resultArea').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            currentExam = null;
+            examAnswers = [];
+            currentQuestionIndex = 0;
+        }
+
+        // 返回大堂
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // 表单提交处理
+        document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                question: document.getElementById('questionText').value,
+                optionA: document.getElementById('optionA').value,
+                optionB: document.getElementById('optionB').value,
+                optionC: document.getElementById('optionC').value,
+                optionD: document.getElementById('optionD').value,
+                correctAnswer: document.getElementById('correctAnswer').value
+            };
+            
+            if (!formData.question || !formData.optionA || !formData.optionB || !formData.optionC || !formData.optionD || !formData.correctAnswer) {
+                alert('请填写所有字段');
+                return;
+            }
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/exam/questions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('题目添加成功！');
+                    hideAddQuestionModal();
+                } else {
+                    const error = await response.json();
+                    alert('添加题目失败：' + error.error);
+                }
+            } catch (error) {
+                console.error('添加题目失败:', error);
+                alert('添加题目失败，请稍后重试');
+            }
+        });
+
+        document.getElementById('examSettingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                questionCount: parseInt(document.getElementById('questionCount').value),
+                bedroomPermissionScore: parseInt(document.getElementById('bedroomPermissionScore').value),
+                adminPermissionScore: parseInt(document.getElementById('adminPermissionScore').value)
+            };
+            
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/exam/settings', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('考试设置保存成功！');
+                    hideExamSettingsModal();
+                } else {
+                    const error = await response.json();
+                    alert('保存设置失败：' + error.error);
+                }
+            } catch (error) {
+                console.error('保存设置失败:', error);
+                alert('保存设置失败，请稍后重试');
+            }
+        });
+    </script>
+</body>
+</html>

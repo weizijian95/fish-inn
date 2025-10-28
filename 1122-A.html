@@ -100,7 +100,7 @@
         </div>
         
         <!-- 客厅装饰区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 max-w-2xl mx-auto">
             <!-- 留言板区 -->
             <a href="1122-A-board.html" class="bg-gradient-to-br from-fish-100 to-fish-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-fish-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
                 <div class="text-center mb-4">
@@ -122,28 +122,6 @@
                     记录美好瞬间的相册 📷
                 </p>
             </a>
-
-            <!-- 书架区 -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-fish-100 hover:shadow-xl transition-all duration-300">
-                <div class="text-center mb-4">
-                    <i class="fas fa-book text-4xl text-fish-400 bounce-slow" style="animation-delay: 0.6s"></i>
-                </div>
-                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">温馨书架</h3>
-                <p class="text-gray-600 text-center text-sm">
-                    我们的故事书收藏 📚
-                </p>
-            </div>
-
-            <!-- 游戏角 -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-rabbit-100 hover:shadow-xl transition-all duration-300">
-                <div class="text-center mb-4">
-                    <i class="fas fa-gamepad text-4xl text-rabbit-400 bounce-slow" style="animation-delay: 0.9s"></i>
-                </div>
-                <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">游戏角落</h3>
-                <p class="text-gray-600 text-center text-sm">
-                    一起玩游戏的快乐时光 🎮
-                </p>
-            </div>
         </div>
 
         <!-- 温馨提示卡片 -->
@@ -169,7 +147,7 @@
         </div>
         
         <!-- 导航按钮组 -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
             <a href="1122.html" class="inline-flex items-center gap-2 bg-white hover:bg-fish-50 text-gray-800 font-medium py-3 px-6 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md">
                 <i class="fas fa-door-closed"></i>
                 <span>回到门口</span>
@@ -178,6 +156,15 @@
                 <i class="fas fa-home"></i>
                 <span>返回大堂</span>
             </a>
+        </div>
+
+        <!-- 前往卧室按钮 -->
+        <div class="text-center">
+            <button onclick="goToBedroom()" class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-400 to-pink-400 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                <i class="fas fa-bed text-xl"></i>
+                <span class="text-lg">前往卧室</span>
+                <i class="fas fa-heart text-lg animate-pulse"></i>
+            </button>
         </div>
     </main>
 
@@ -225,6 +212,51 @@
             localStorage.removeItem('user');
             localStorage.removeItem('token');
             updateUserUI();
+        }
+
+        // 前往卧室功能
+        function goToBedroom() {
+            const user = getUserInfo();
+            
+            // 检查用户是否已登录
+            if (!user) {
+                alert('请先登录后再前往卧室');
+                goToLogin();
+                return;
+            }
+            
+            // 检查用户是否有前往卧室的权限
+            checkBedroomPermission(user.id);
+        }
+
+        // 检查卧室权限
+        async function checkBedroomPermission(userId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/users/${userId}/permissions`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.permissions && data.permissions.includes('前往1122卧室')) {
+                        // 有权限，跳转到卧室（暂时显示提示）
+                        alert('恭喜！你获得了前往卧室的权限！\n卧室功能正在开发中，敬请期待...');
+                    } else {
+                        // 没有权限，提示去520房间
+                        alert('你需要去房间号为520的房间参与爱的测试，通过测试后即可获得前往卧室的权限！');
+                    }
+                } else {
+                    // 没有权限，提示去520房间
+                    alert('你需要去房间号为520的房间参与爱的测试，通过测试后即可获得前往卧室的权限！');
+                }
+            } catch (error) {
+                console.error('检查权限失败:', error);
+                // 没有权限，提示去520房间
+                alert('你需要去房间号为520的房间参与爱的测试，通过测试后即可获得前往卧室的权限！');
+            }
         }
     </script>
 </body>

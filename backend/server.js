@@ -26,11 +26,13 @@ const messageRoutes = require('./routes/messages');
 const userRoutes = require('./routes/users');
 const uploadRoutes = require('./routes/upload');
 const photoRoutes = require('./routes/photos');
+const examRoutes = require('./routes/exam');
 
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/photos', photoRoutes);
+app.use('/api', examRoutes);
 
 // 健康检查
 app.get('/health', (req, res) => {
