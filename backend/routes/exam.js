@@ -295,9 +295,10 @@ router.post('/exam/submit', authenticateToken, async (req, res) => {
 
         // 获取题目正确答案和内容
         const questionIds = answers.map(a => a.questionId);
+        const placeholders = questionIds.map(() => '?').join(',');
         const [questions] = await db.query(
-            'SELECT id, question, correct_answer FROM exam_questions WHERE id IN (?)',
-            [questionIds]
+            `SELECT id, question, correct_answer FROM exam_questions WHERE id IN (${placeholders})`,
+            questionIds
         );
 
         const correctAnswers = {};

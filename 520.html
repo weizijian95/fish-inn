@@ -115,17 +115,6 @@
             <!-- 客栈主人功能 -->
             <div id="adminPanel" class="hidden">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <!-- 新增题目 -->
-                    <button onclick="showAddQuestionModal()" class="bg-gradient-to-br from-love-100 to-love-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-love-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
-                        <div class="text-center mb-4">
-                            <i class="fas fa-plus-circle text-4xl text-love-400 bounce-slow"></i>
-                        </div>
-                        <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">新增题目</h3>
-                        <p class="text-gray-600 text-center text-sm">
-                            添加新的测试题目 ✨
-                        </p>
-                    </button>
-
                     <!-- 管理题目 -->
                     <button onclick="showQuestionManagementModal()" class="bg-gradient-to-br from-heart-100 to-heart-50 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-heart-200 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
                         <div class="text-center mb-4">
@@ -133,7 +122,7 @@
                         </div>
                         <h3 class="text-xl font-cute font-bold text-gray-800 mb-2 text-center">管理题目</h3>
                         <p class="text-gray-600 text-center text-sm">
-                            查看和删除题目 📝
+                            添加、查看和删除题目 📝
                         </p>
                     </button>
 
@@ -230,70 +219,70 @@
     </footer>
 
     <!-- 模态框 -->
-    <!-- 新增题目模态框 -->
-    <div id="addQuestionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-cute font-bold text-gray-800">新增题目</h3>
-            </div>
-            
-            <form id="addQuestionForm">
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">题目内容</label>
-                    <textarea id="questionText" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" rows="3" placeholder="请输入题目内容..."></textarea>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-gray-700 font-medium mb-2">选项A</label>
-                        <input type="text" id="optionA" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项A">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium mb-2">选项B</label>
-                        <input type="text" id="optionB" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项B">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium mb-2">选项C</label>
-                        <input type="text" id="optionC" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项C">
-                    </div>
-                    <div>
-                        <label class="block text-gray-700 font-medium mb-2">选项D</label>
-                        <input type="text" id="optionD" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项D">
-                    </div>
-                </div>
-                
-                <div class="mb-6">
-                    <label class="block text-gray-700 font-medium mb-2">正确答案</label>
-                    <select id="correctAnswer" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent">
-                        <option value="">请选择正确答案</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                    </select>
-                </div>
-                
-                <div class="flex justify-center gap-4">
-                    <button type="button" onclick="hideAddQuestionModal()" class="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors">
-                        取消
-                    </button>
-                    <button type="submit" class="px-6 py-3 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-medium rounded-lg transition-all duration-300">
-                        保存题目
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- 题目管理模态框 -->
     <div id="questionManagementModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="bg-white rounded-2xl p-8 max-w-6xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="text-center mb-6">
                 <h3 class="text-2xl font-cute font-bold text-gray-800">题目管理</h3>
             </div>
             
-            <div id="questionList" class="space-y-4 mb-6">
-                <!-- 题目列表将在这里动态生成 -->
+            <!-- 新增题目表单 -->
+            <div class="mb-8 p-6 bg-gray-50 rounded-lg border border-gray-200">
+                <h4 class="text-lg font-bold text-gray-800 mb-4">新增题目</h4>
+                <form id="addQuestionFormInModal">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">题目内容</label>
+                        <textarea id="questionTextInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" rows="3" placeholder="请输入题目内容..."></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">选项A</label>
+                            <input type="text" id="optionAInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项A">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">选项B</label>
+                            <input type="text" id="optionBInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项B">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">选项C</label>
+                            <input type="text" id="optionCInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项C">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">选项D</label>
+                            <input type="text" id="optionDInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent" placeholder="选项D">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-gray-700 font-medium mb-2">正确答案</label>
+                        <select id="correctAnswerInModal" class="w-full p-3 border border-love-200 rounded-lg focus:ring-2 focus:ring-love-400 focus:border-transparent">
+                            <option value="">请选择正确答案</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-center gap-4">
+                        <button type="button" onclick="resetAddQuestionForm()" class="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white font-medium rounded-lg transition-colors">
+                            重置
+                        </button>
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-love-400 to-heart-400 hover:from-love-500 hover:to-heart-500 text-white font-medium rounded-lg transition-all duration-300">
+                            保存题目
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- 题目列表 -->
+            <div class="mb-6">
+                <h4 class="text-lg font-bold text-gray-800 mb-4">现有题目</h4>
+                <div id="questionList" class="space-y-4">
+                    <!-- 题目列表将在这里动态生成 -->
+                </div>
             </div>
             
             <div class="flex justify-center gap-4">
@@ -408,17 +397,9 @@
             }
         }
 
-        // 显示新增题目模态框
-        function showAddQuestionModal() {
-            document.getElementById('addQuestionModal').classList.remove('hidden');
-            document.getElementById('addQuestionModal').classList.add('flex');
-        }
-
-        // 隐藏新增题目模态框
-        function hideAddQuestionModal() {
-            document.getElementById('addQuestionModal').classList.add('hidden');
-            document.getElementById('addQuestionModal').classList.remove('flex');
-            document.getElementById('addQuestionForm').reset();
+        // 重置新增题目表单
+        function resetAddQuestionForm() {
+            document.getElementById('addQuestionFormInModal').reset();
         }
 
         // 显示设置考试模态框
@@ -771,16 +752,16 @@
         }
 
         // 表单提交处理
-        document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
+        document.getElementById('addQuestionFormInModal').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const formData = {
-                question: document.getElementById('questionText').value,
-                optionA: document.getElementById('optionA').value,
-                optionB: document.getElementById('optionB').value,
-                optionC: document.getElementById('optionC').value,
-                optionD: document.getElementById('optionD').value,
-                correctAnswer: document.getElementById('correctAnswer').value
+                question: document.getElementById('questionTextInModal').value,
+                optionA: document.getElementById('optionAInModal').value,
+                optionB: document.getElementById('optionBInModal').value,
+                optionC: document.getElementById('optionCInModal').value,
+                optionD: document.getElementById('optionDInModal').value,
+                correctAnswer: document.getElementById('correctAnswerInModal').value
             };
             
             if (!formData.question || !formData.optionA || !formData.optionB || !formData.optionC || !formData.optionD || !formData.correctAnswer) {
@@ -801,7 +782,8 @@
                 
                 if (response.ok) {
                     alert('题目添加成功！');
-                    hideAddQuestionModal();
+                    resetAddQuestionForm();
+                    loadQuestions(); // 重新加载题目列表
                 } else {
                     const error = await response.json();
                     alert('添加题目失败：' + error.error);
