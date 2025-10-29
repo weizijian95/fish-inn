@@ -119,14 +119,15 @@ router.delete('/exam/questions/:id', authenticateToken, checkAdminPermission, as
         const { id } = req.params;
         
         // 验证题目ID
-        if (!id || isNaN(parseInt(id))) {
+        const questionId = parseInt(id);
+        if (!id || isNaN(questionId)) {
             return res.status(400).json({ error: '无效的题目ID' });
         }
 
         // 检查题目是否存在
         const [existingQuestion] = await db.query(
             'SELECT id FROM exam_questions WHERE id = ?',
-            [id]
+            [questionId]
         );
 
         if (existingQuestion.length === 0) {
@@ -136,9 +137,8 @@ router.delete('/exam/questions/:id', authenticateToken, checkAdminPermission, as
         // 删除题目
         await db.query(
             'DELETE FROM exam_questions WHERE id = ?',
-            [id]
+            [questionId]
         );
-
         res.json({
             success: true,
             message: '题目删除成功'
@@ -294,7 +294,12 @@ router.post('/exam/submit', authenticateToken, async (req, res) => {
         const adminPermissionScore = settings.length > 0 ? settings[0].admin_permission_score : 5;
 
         // 获取题目正确答案和内容
-        const questionIds = answers.map(a => a.questionId);
+        const questionIds = answers.map(a => parseInt(a.questionId));
+        
+        if (questionIds.length === 0) {
+            return res.status(400).json({ error: '没有答案数据' });
+        }
+        
         const placeholders = questionIds.map(() => '?').join(',');
         const [questions] = await db.query(
             `SELECT id, question, correct_answer FROM exam_questions WHERE id IN (${placeholders})`,
