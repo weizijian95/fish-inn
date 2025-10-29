@@ -113,6 +113,42 @@ router.get('/exam/questions', authenticateToken, checkAdminPermission, async (re
     }
 });
 
+// 删除题目（需要客栈主人权限）
+router.delete('/exam/questions/:id', authenticateToken, checkAdminPermission, async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        // 验证题目ID
+        if (!id || isNaN(parseInt(id))) {
+            return res.status(400).json({ error: '无效的题目ID' });
+        }
+
+        // 检查题目是否存在
+        const [existingQuestion] = await db.query(
+            'SELECT id FROM exam_questions WHERE id = ?',
+            [id]
+        );
+
+        if (existingQuestion.length === 0) {
+            return res.status(404).json({ error: '题目不存在' });
+        }
+
+        // 删除题目
+        await db.query(
+            'DELETE FROM exam_questions WHERE id = ?',
+            [id]
+        );
+
+        res.json({
+            success: true,
+            message: '题目删除成功'
+        });
+    } catch (error) {
+        console.error('删除题目失败:', error);
+        res.status(500).json({ error: '删除题目失败' });
+    }
+});
+
 // 设置考试规则（需要客栈主人权限）
 router.post('/exam/settings', authenticateToken, checkAdminPermission, async (req, res) => {
     try {
@@ -194,19 +230,27 @@ router.post('/exam/start', authenticateToken, async (req, res) => {
 
         const questionCount = settings.length > 0 ? settings[0].question_count : 5;
 
-        // 随机获取题目
-        const [questions] = await db.query(
-            'SELECT id, question, option_a, option_b, option_c, option_d FROM exam_questions ORDER BY RAND() LIMIT ?',
-            [questionCount]
+        // 随机获取题目（确保不重复）
+        const [allQuestions] = await db.query(
+            'SELECT id, question, option_a, option_b, option_c, option_d FROM exam_questions'
         );
-
-        if (questions.length === 0) {
+        
+        if (allQuestions.length === 0) {
             return res.status(400).json({ error: '暂无可用题目，请联系管理员添加题目' });
         }
-
-        if (questions.length < questionCount) {
-            return res.status(400).json({ error: `题目数量不足，当前只有${questions.length}道题目，需要${questionCount}道` });
+        
+        if (allQuestions.length < questionCount) {
+            return res.status(400).json({ error: `题目数量不足，当前只有${allQuestions.length}道题目，需要${questionCount}道` });
         }
+        
+        // 使用Fisher-Yates洗牌算法确保随机且不重复
+        const shuffled = [...allQuestions];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        
+        const questions = shuffled.slice(0, questionCount);
 
         // 格式化题目数据
         const formattedQuestions = questions.map(q => ({
@@ -249,16 +293,18 @@ router.post('/exam/submit', authenticateToken, async (req, res) => {
         const bedroomPermissionScore = settings.length > 0 ? settings[0].bedroom_permission_score : 4;
         const adminPermissionScore = settings.length > 0 ? settings[0].admin_permission_score : 5;
 
-        // 获取题目正确答案
+        // 获取题目正确答案和内容
         const questionIds = answers.map(a => a.questionId);
         const [questions] = await db.query(
-            'SELECT id, correct_answer FROM exam_questions WHERE id IN (?)',
+            'SELECT id, question, correct_answer FROM exam_questions WHERE id IN (?)',
             [questionIds]
         );
 
         const correctAnswers = {};
+        const questionContents = {};
         questions.forEach(q => {
             correctAnswers[q.id] = q.correct_answer;
+            questionContents[q.id] = q.question;
         });
 
         // 计算分数
@@ -270,10 +316,9 @@ router.post('/exam/submit', authenticateToken, async (req, res) => {
             if (isCorrect) score++;
 
             // 获取题目内容用于显示
-            const question = questions.find(q => q.id === answer.questionId);
             details.push({
                 questionId: answer.questionId,
-                question: question ? question.question : '题目已删除',
+                question: questionContents[answer.questionId] || '题目已删除',
                 userAnswer: answer.answer,
                 correctAnswer: correctAnswers[answer.questionId],
                 isCorrect: isCorrect
