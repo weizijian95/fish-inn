@@ -150,6 +150,7 @@
         /* 变换 */
         .transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important; }
         .-translate-x-1\/2 { --tw-translate-x: -50% !important; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important; }
+        .rotate-12 { --tw-rotate: 12deg !important; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(12deg) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important; }
         
         /* 透明度 */
         .opacity-0 { opacity: 0 !important; }
@@ -216,6 +217,15 @@
         .leading-relaxed { line-height: 1.625 !important; }
         .pointer-events-none { pointer-events: none !important; }
         .mt-auto { margin-top: auto !important; }
+        
+        /* 动画 */
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
     </style>
     
     <!-- 自定义样式类 -->

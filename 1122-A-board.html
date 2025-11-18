@@ -228,6 +228,15 @@
         .leading-relaxed { line-height: 1.625 !important; }
         .pointer-events-none { pointer-events: none !important; }
         .mt-auto { margin-top: auto !important; }
+        
+        /* 动画 */
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
     </style>
     
     <!-- 自定义样式类 -->
@@ -268,7 +277,6 @@
         .hover\:shadow-fish-300\/20:hover { box-shadow: 0 10px 15px -3px rgba(153, 204, 243, 0.2) !important; }
         .bg-gradient-to-r.from-fish-300.to-rabbit-300 { background-image: linear-gradient(to right, #99CCF3, #FFC2D1) !important; }
         /* 额外需要的类 */
-        .sm\:flex-row { }
         @media (min-width: 640px) {
             .sm\:flex-row { flex-direction: row !important; }
         }
