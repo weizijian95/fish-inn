@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>温馨留言板 - 1122客厅</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
     
     <!-- 完整样式 - 不依赖CDN -->
     <style>
@@ -21,6 +24,7 @@
         .flex { display: flex !important; }
         .flex-col { flex-direction: column !important; }
         .flex-grow { flex-grow: 1 !important; }
+        .flex-1 { flex: 1 1 0% !important; }
         .flex-shrink-0 { flex-shrink: 0 !important; }
         .items-center { align-items: center !important; }
         .justify-center { justify-content: center !important; }
@@ -41,6 +45,8 @@
         .h-2 { height: 0.5rem !important; }
         .h-1 { height: 0.25rem !important; }
         .h-1\.5 { height: 0.375rem !important; }
+        .min-w-\[44px\] { min-width: 44px !important; }
+        .min-h-\[44px\] { min-height: 44px !important; }
         .min-h-screen { min-height: 100vh !important; }
         .max-w-md { max-width: 28rem !important; }
         .max-w-2xl { max-width: 42rem !important; }
@@ -74,6 +80,12 @@
         .mx-auto { margin-left: auto !important; margin-right: auto !important; }
         .mr-1 { margin-right: 0.25rem !important; }
         .mr-2 { margin-right: 0.5rem !important; }
+        .mr-3 { margin-right: 0.75rem !important; }
+        .mr-4 { margin-right: 1rem !important; }
+        .ml-1 { margin-left: 0.25rem !important; }
+        .ml-2 { margin-left: 0.5rem !important; }
+        .ml-3 { margin-left: 0.75rem !important; }
+        .ml-4 { margin-left: 1rem !important; }
         
         /* 容器 */
         .container {
@@ -103,6 +115,14 @@
         .text-gray-700 { color: #374151 !important; }
         .text-gray-800 { color: #1f2937 !important; }
         .text-white { color: #ffffff !important; }
+        .text-red-400 { color: #f87171 !important; }
+        .text-red-500 { color: #ef4444 !important; }
+        .text-red-600 { color: #dc2626 !important; }
+        .bg-red-50 { background-color: #fef2f2 !important; }
+        .bg-red-100 { background-color: #fee2e2 !important; }
+        .border-red-100 { border-color: #fee2e2 !important; }
+        .hover\:bg-red-50:hover { background-color: #fef2f2 !important; }
+        .hover\:text-red-600:hover { color: #dc2626 !important; }
         
         /* 背景 */
         .bg-white { background-color: #ffffff !important; }
@@ -157,6 +177,9 @@
         /* 显示/隐藏 */
         .hidden { display: none !important; }
         .block { display: block !important; }
+        @media (min-width: 640px) {
+            .sm\:inline { display: inline !important; }
+        }
         
         /* 变换 */
         .transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important; }
@@ -184,13 +207,23 @@
             height: 32px !important;
             object-fit: cover !important;
             border-radius: 50% !important;
+            display: block !important;
+        }
+        /* 留言列表中的头像样式 */
+        #messageList img[alt="头像"] {
+            max-width: 48px !important;
+            max-height: 48px !important;
+            width: 48px !important;
+            height: 48px !important;
+            display: block !important;
         }
         
         /* 按钮和交互 */
         button, a.button {
             cursor: pointer;
+        }
+        button[class*="bg-"], a.button[class*="bg-"] {
             border: none;
-            background: none;
         }
         button:hover, a:hover {
             opacity: 0.9;
@@ -237,6 +270,71 @@
             0%, 100% { opacity: 1; }
             50% { opacity: .5; }
         }
+        
+        /* 响应式设计 - 移动端优化 */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+                -webkit-text-size-adjust: 100%;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            button, a.button, input[type="button"], input[type="submit"] {
+                min-height: 44px;
+                min-width: 44px;
+                padding: 0.75rem 1.5rem;
+            }
+            .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .py-12 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+            .mb-12 { margin-bottom: 2rem !important; }
+            .gap-8 { gap: 1.5rem !important; }
+        }
+        
+        /* 温馨样式优化 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        /* 更温馨的按钮样式 */
+        button, a.button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0.75rem;
+            font-weight: 500;
+        }
+        button:active, a.button:active {
+            transform: scale(0.98);
+        }
+        
+        /* 更温馨的卡片样式 */
+        .card, [class*="rounded-2xl"], [class*="rounded-xl"] {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover, [class*="rounded-2xl"]:hover, [class*="rounded-xl"]:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 更温馨的输入框样式 */
+        input, textarea {
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            border-width: 1.5px;
+        }
+        input:focus, textarea:focus {
+            border-width: 2px;
+            box-shadow: 0 0 0 4px rgba(153, 204, 243, 0.1);
+        }
+        
+        /* 触摸优化 */
+        @media (hover: none) and (pointer: coarse) {
+            button, a, [role="button"] {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
+        }
     </style>
     
     <!-- 自定义样式类 -->
@@ -276,6 +374,37 @@
         .border-fish-200\/50 { border-color: rgba(204, 229, 255, 0.5) !important; }
         .hover\:shadow-fish-300\/20:hover { box-shadow: 0 10px 15px -3px rgba(153, 204, 243, 0.2) !important; }
         .bg-gradient-to-r.from-fish-300.to-rabbit-300 { background-image: linear-gradient(to right, #99CCF3, #FFC2D1) !important; }
+        /* 渐变色类 - 直接支持，不依赖CSS变量 */
+        .from-fish-300.to-fish-400 { background-image: linear-gradient(to bottom right, #99CCF3, #66B3E8) !important; }
+        .from-rabbit-300.to-rabbit-400 { background-image: linear-gradient(to bottom right, #FFC2D1, #FFB0C4) !important; }
+        .from-purple-300.to-purple-400 { background-image: linear-gradient(to bottom right, #C4B5FD, #A78BFA) !important; }
+        .from-green-300.to-green-400 { background-image: linear-gradient(to bottom right, #86EFAC, #4ADE80) !important; }
+        .from-yellow-300.to-yellow-400 { background-image: linear-gradient(to bottom right, #FDE047, #FACC15) !important; }
+        .from-pink-300.to-pink-400 { background-image: linear-gradient(to bottom right, #F9A8D4, #F472B6) !important; }
+        .from-fish-400.to-rabbit-400 { background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important; }
+        .from-fish-300.to-rabbit-300 { background-image: linear-gradient(to right, #99CCF3, #FFC2D1) !important; }
+        .from-fish-100.to-rabbit-100 { background-image: linear-gradient(to bottom right, #E0F0FF, #FFEFF6) !important; }
+        /* Purple, Green, Yellow, Pink颜色 */
+        .bg-purple-300 { background-color: #C4B5FD !important; }
+        .bg-purple-400 { background-color: #A78BFA !important; }
+        .bg-green-300 { background-color: #86EFAC !important; }
+        .bg-green-400 { background-color: #4ADE80 !important; }
+        .bg-yellow-300 { background-color: #FDE047 !important; }
+        .bg-yellow-400 { background-color: #FACC15 !important; }
+        .bg-pink-300 { background-color: #F9A8D4 !important; }
+        .bg-pink-400 { background-color: #F472B6 !important; }
+        .text-purple-400 { color: #A78BFA !important; }
+        .text-green-400 { color: #4ADE80 !important; }
+        .text-yellow-400 { color: #FACC15 !important; }
+        .text-pink-400 { color: #F472B6 !important; }
+        .border-purple-400 { border-color: #A78BFA !important; }
+        .border-green-400 { border-color: #4ADE80 !important; }
+        .border-yellow-400 { border-color: #FACC15 !important; }
+        .border-pink-400 { border-color: #F472B6 !important; }
+        .hover\:border-purple-400:hover { border-color: #A78BFA !important; }
+        .hover\:border-green-400:hover { border-color: #4ADE80 !important; }
+        .hover\:border-yellow-400:hover { border-color: #FACC15 !important; }
+        .hover\:border-pink-400:hover { border-color: #F472B6 !important; }
         /* 额外需要的类 */
         @media (min-width: 640px) {
             .sm\:flex-row { flex-direction: row !important; }
@@ -291,7 +420,7 @@
 </head>
 <body class="bg-gradient-to-br from-fish-50 via-white to-rabbit-50 bg-pattern min-h-screen flex flex-col">
     <!-- 顶部装饰条 -->
-    <div class="w-full h-1.5 bg-gradient-to-r from-fish-400 via-rabbit-300 to-fish-300"></div>
+    <div class="w-full h-1.5 bg-gradient-to-r from-fish-400 via-rabbit-300 to-fish-300" style="background-image: linear-gradient(to right, #66B3E8, #FFC2D1, #99CCF3);"></div>
 
     <!-- 主内容区 -->
     <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
@@ -302,7 +431,7 @@
                 <button id="loginBtn" class="bg-white hover:bg-fish-50 text-gray-800 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md text-sm">
                     <i class="fas fa-sign-in-alt mr-1"></i>登录
                 </button>
-                <button id="registerBtn" class="bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow-md text-sm">
+                <button id="registerBtn" class="bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm hover:shadow-md text-sm" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                     <i class="fas fa-user-plus mr-1"></i>注册
                 </button>
             </div>
@@ -318,18 +447,19 @@
                 <button id="userMenuBtn" class="bg-white hover:bg-fish-50 text-gray-800 font-medium py-2 px-3 rounded-full transition-all duration-300 shadow-sm border border-fish-100 hover:shadow-md">
                     <i class="fas fa-cog"></i>
                 </button>
-                <button id="logoutBtn" class="bg-white hover:bg-red-50 text-red-500 font-medium py-2 px-3 rounded-full transition-all duration-300 shadow-sm border border-red-100 hover:shadow-md">
+                <button id="logoutBtn" class="bg-white hover:bg-red-50 text-red-500 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-red-100 hover:shadow-md flex items-center gap-2 min-w-[44px] min-h-[44px]" title="退出登录">
                     <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden sm:inline">退出</span>
                 </button>
             </div>
         </div>
 
         <!-- 标题区 -->
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-fish-100 to-rabbit-100 mb-3 shadow-md">
+            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-fish-100 to-rabbit-100 mb-3 shadow-md" style="background-image: linear-gradient(to bottom right, #E0F0FF, #FFEFF6);">
                 <i class="fas fa-message text-4xl text-fish-400"></i>
             </div>
-            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-cute font-bold bg-gradient-to-r from-fish-400 to-rabbit-400 bg-clip-text text-transparent mb-2">
+            <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-cute font-bold bg-gradient-to-r from-fish-400 to-rabbit-400 bg-clip-text text-transparent mb-2" style="background-image: linear-gradient(to right, #66B3E8, #FFB0C4); -webkit-background-clip: text; background-clip: text; color: transparent;">
                 温馨留言板
             </h1>
             <p class="text-gray-600 text-sm">在这里留下你的心情和祝福 💌</p>
@@ -337,7 +467,7 @@
 
         <!-- 发表留言按钮 -->
         <div class="mb-8 text-center">
-            <button id="postMessageBtn" class="inline-flex items-center gap-2 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+            <button id="postMessageBtn" class="inline-flex items-center gap-2 bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                 <i class="fas fa-pen"></i>
                 <span>发表留言</span>
             </button>
@@ -366,7 +496,7 @@
     <!-- 登录弹窗 -->
     <div id="loginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
-            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                 <h2 class="text-2xl font-cute font-bold text-center">登录</h2>
             </div>
             
@@ -385,7 +515,7 @@
                     <button id="loginCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
                         取消
                     </button>
-                    <button id="loginSubmitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                    <button id="loginSubmitBtn" class="flex-1 bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                         登录
                     </button>
                 </div>
@@ -403,7 +533,7 @@
     <!-- 注册弹窗 -->
     <div id="registerModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                 <h2 class="text-2xl font-cute font-bold text-center">注册</h2>
             </div>
             
@@ -427,22 +557,22 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">选择头像</label>
                     <div class="flex gap-3 flex-wrap justify-center">
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish" style="background-image: linear-gradient(to bottom right, #99CCF3, #66B3E8);">
                             <i class="fas fa-fish text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit" style="background-image: linear-gradient(to bottom right, #FFC2D1, #FFB0C4);">
                             <i class="fas fa-heart text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star" style="background-image: linear-gradient(to bottom right, #C4B5FD, #A78BFA);">
                             <i class="fas fa-star text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf" style="background-image: linear-gradient(to bottom right, #86EFAC, #4ADE80);">
                             <i class="fas fa-leaf text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun" style="background-image: linear-gradient(to bottom right, #FDE047, #FACC15);">
                             <i class="fas fa-sun text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
+                        <div class="avatar-option-register w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud" style="background-image: linear-gradient(to bottom right, #F9A8D4, #F472B6);">
                             <i class="fas fa-cloud text-white text-2xl"></i>
                         </div>
                     </div>
@@ -471,7 +601,7 @@
                     <button id="registerCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
                         取消
                     </button>
-                    <button id="registerSubmitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                    <button id="registerSubmitBtn" class="flex-1 bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                         注册
                     </button>
                 </div>
@@ -489,7 +619,7 @@
     <!-- 用户设置弹窗 -->
     <div id="userSettingsModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full">
-            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                 <h2 class="text-2xl font-cute font-bold text-center">个人设置</h2>
             </div>
             
@@ -498,22 +628,22 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">选择预设头像</label>
                     <div class="flex gap-3 flex-wrap justify-center">
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-fish-300 to-fish-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-fish-400 transition-all" data-avatar="fish" style="background-image: linear-gradient(to bottom right, #99CCF3, #66B3E8);">
                             <i class="fas fa-fish text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-rabbit-300 to-rabbit-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-rabbit-400 transition-all" data-avatar="rabbit" style="background-image: linear-gradient(to bottom right, #FFC2D1, #FFB0C4);">
                             <i class="fas fa-heart text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-purple-300 to-purple-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-purple-400 transition-all" data-avatar="star" style="background-image: linear-gradient(to bottom right, #C4B5FD, #A78BFA);">
                             <i class="fas fa-star text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-green-300 to-green-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-green-400 transition-all" data-avatar="leaf" style="background-image: linear-gradient(to bottom right, #86EFAC, #4ADE80);">
                             <i class="fas fa-leaf text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-yellow-400 transition-all" data-avatar="sun" style="background-image: linear-gradient(to bottom right, #FDE047, #FACC15);">
                             <i class="fas fa-sun text-white text-2xl"></i>
                         </div>
-                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud">
+                        <div class="avatar-option-settings w-16 h-16 rounded-full bg-gradient-to-br from-pink-300 to-pink-400 flex items-center justify-center cursor-pointer border-4 border-transparent hover:border-pink-400 transition-all" data-avatar="cloud" style="background-image: linear-gradient(to bottom right, #F9A8D4, #F472B6);">
                             <i class="fas fa-cloud text-white text-2xl"></i>
                         </div>
                     </div>
@@ -542,7 +672,7 @@
                     <button id="settingsCancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
                         取消
                     </button>
-                    <button id="settingsSaveBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                    <button id="settingsSaveBtn" class="flex-1 bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                         保存
                     </button>
                 </div>
@@ -553,7 +683,7 @@
     <!-- 发表留言弹窗 -->
     <div id="postModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl">
+            <div class="sticky top-0 bg-gradient-to-r from-fish-400 to-rabbit-400 text-white p-6 rounded-t-3xl" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                 <h2 class="text-2xl font-cute font-bold text-center">发表留言</h2>
             </div>
             
@@ -572,7 +702,7 @@
                     <button id="cancelBtn" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl transition-all duration-300">
                         取消
                     </button>
-                    <button id="submitBtn" class="flex-1 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg">
+                    <button id="submitBtn" class="flex-1 bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400 hover:from-fish-300 hover:to-rabbit-300 text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 shadow-lg" style="background-color: #66B3E8 !important; background-image: linear-gradient(to right, #66B3E8, #FFB0C4) !important;">
                         发表
                     </button>
                 </div>
@@ -602,6 +732,16 @@
             leaf: { icon: 'fa-leaf', gradient: 'from-green-300 to-green-400' },
             sun: { icon: 'fa-sun', gradient: 'from-yellow-300 to-yellow-400' },
             cloud: { icon: 'fa-cloud', gradient: 'from-pink-300 to-pink-400' }
+        };
+        
+        // 头像渐变颜色映射（直接颜色值，不依赖CSS变量）
+        const AVATAR_GRADIENT_STYLES = {
+            fish: 'linear-gradient(to bottom right, #99CCF3, #66B3E8)',
+            rabbit: 'linear-gradient(to bottom right, #FFC2D1, #FFB0C4)',
+            star: 'linear-gradient(to bottom right, #C4B5FD, #A78BFA)',
+            leaf: 'linear-gradient(to bottom right, #86EFAC, #4ADE80)',
+            sun: 'linear-gradient(to bottom right, #FDE047, #FACC15)',
+            cloud: 'linear-gradient(to bottom right, #F9A8D4, #F472B6)'
         };
 
         // 当前选择的头像
@@ -655,11 +795,19 @@
                     const avatarUrl = user.avatar.startsWith('http') ? user.avatar : `${API_BASE_URL.replace('/api', '')}${user.avatar}`;
                     console.log('Constructed avatar URL:', avatarUrl);
                     avatarDisplay.className = `w-8 h-8 rounded-full overflow-hidden border-2 border-fish-100`;
-                    avatarDisplay.innerHTML = `<img src="${avatarUrl}" class="w-full h-full object-cover" onerror="console.error('Failed to load avatar:', this.src)">`;
+                    avatarDisplay.style.width = '32px';
+                    avatarDisplay.style.height = '32px';
+                    avatarDisplay.style.borderRadius = '50%';
+                    avatarDisplay.innerHTML = `<img src="${avatarUrl}" alt="头像" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="console.error('Failed to load avatar:', this.src)">`;
                 } else {
                     // 预设头像
                     const avatarConfig = AVATAR_CONFIG[user.avatar] || AVATAR_CONFIG.fish;
+                    const gradientStyle = AVATAR_GRADIENT_STYLES[user.avatar] || AVATAR_GRADIENT_STYLES.fish;
                     avatarDisplay.className = `w-8 h-8 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center`;
+                    avatarDisplay.style.width = '32px';
+                    avatarDisplay.style.height = '32px';
+                    avatarDisplay.style.borderRadius = '50%';
+                    avatarDisplay.style.backgroundImage = gradientStyle;
                     avatarDisplay.innerHTML = `<i class="fas ${avatarConfig.icon} text-white"></i>`;
                 }
             } else {
@@ -670,23 +818,33 @@
         
         // 渲染头像HTML（用于留言列表）
         function renderAvatar(avatar) {
-            console.log('Rendering avatar:', avatar);
+            if (!avatar) {
+                // 如果没有头像，使用默认头像
+                const avatarConfig = AVATAR_CONFIG.fish;
+                const gradientStyle = AVATAR_GRADIENT_STYLES.fish;
+                return `
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md border-2 border-white" style="background-image: ${gradientStyle};">
+                        <i class="fas ${avatarConfig.icon} text-white text-xl"></i>
+                    </div>
+                `;
+            }
             
             // 检查是否是自定义上传的头像
             if (avatar.startsWith('/uploads/') || avatar.startsWith('http')) {
                 // 自定义上传的头像
                 const avatarUrl = avatar.startsWith('http') ? avatar : `${API_BASE_URL.replace('/api', '')}${avatar}`;
-                console.log('Custom avatar URL:', avatarUrl);
+                const fallbackGradient = AVATAR_GRADIENT_STYLES.fish;
                 return `
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-white">
-                        <img src="${avatarUrl}" class="w-full h-full object-cover" onerror="console.error('Failed to load message avatar:', this.src)">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-white" style="width: 48px; height: 48px; border-radius: 50%;">
+                        <img src="${avatarUrl}" alt="头像" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-md border-2 border-white\\' style=\\'width: 48px; height: 48px; border-radius: 50%; background-image: ${fallbackGradient};\\'><i class=\\'fas fa-user text-white text-xl\\'></i></div>';">
                     </div>
                 `;
             } else {
                 // 预设头像
                 const avatarConfig = AVATAR_CONFIG[avatar] || AVATAR_CONFIG.fish;
+                const gradientStyle = AVATAR_GRADIENT_STYLES[avatar] || AVATAR_GRADIENT_STYLES.fish;
                 return `
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br ${avatarConfig.gradient} flex items-center justify-center shadow-md border-2 border-white" style="width: 48px; height: 48px; border-radius: 50%; background-image: ${gradientStyle};">
                         <i class="fas ${avatarConfig.icon} text-white text-xl"></i>
                     </div>
                 `;
@@ -1342,8 +1500,12 @@
         // 显示提示消息
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-gradient-to-r from-fish-400 to-rabbit-400';
+            const bgColor = type === 'error' ? 'bg-red-500' : 'bg-fish-400 bg-gradient-to-r from-fish-400 to-rabbit-400';
             toast.className = `fixed bottom-8 left-1/2 transform -translate-x-1/2 ${bgColor} text-white px-6 py-3 rounded-full shadow-lg z-50 transition-all duration-300 opacity-0`;
+            if (type !== 'error') {
+                toast.style.backgroundColor = '#66B3E8';
+                toast.style.backgroundImage = 'linear-gradient(to right, #66B3E8, #FFB0C4)';
+            }
             toast.textContent = message;
             document.body.appendChild(toast);
             

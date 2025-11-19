@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>甜美相册 - 记录美好瞬间</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"></noscript>
     
     <!-- 完整样式 - 不依赖CDN -->
     <style>
@@ -21,6 +24,8 @@
         .flex { display: flex !important; }
         .flex-col { flex-direction: column !important; }
         .flex-grow { flex-grow: 1 !important; }
+        .flex-1 { flex: 1 1 0% !important; }
+        .flex-shrink-0 { flex-shrink: 0 !important; }
         .items-center { align-items: center !important; }
         .justify-center { justify-content: center !important; }
         .justify-end { justify-content: flex-end !important; }
@@ -38,6 +43,8 @@
         .h-2 { height: 0.5rem !important; }
         .h-1 { height: 0.25rem !important; }
         .h-1\.5 { height: 0.375rem !important; }
+        .min-w-\[44px\] { min-width: 44px !important; }
+        .min-h-\[44px\] { min-height: 44px !important; }
         .min-h-screen { min-height: 100vh !important; }
         .max-w-md { max-width: 28rem !important; }
         .max-w-2xl { max-width: 42rem !important; }
@@ -70,6 +77,14 @@
         .mt-4 { margin-top: 1rem !important; }
         .mt-8 { margin-top: 2rem !important; }
         .mx-auto { margin-left: auto !important; margin-right: auto !important; }
+        .mr-1 { margin-right: 0.25rem !important; }
+        .mr-2 { margin-right: 0.5rem !important; }
+        .mr-3 { margin-right: 0.75rem !important; }
+        .mr-4 { margin-right: 1rem !important; }
+        .ml-1 { margin-left: 0.25rem !important; }
+        .ml-2 { margin-left: 0.5rem !important; }
+        .ml-3 { margin-left: 0.75rem !important; }
+        .ml-4 { margin-left: 1rem !important; }
         
         /* 容器 */
         .container {
@@ -99,6 +114,14 @@
         .text-gray-700 { color: #374151 !important; }
         .text-gray-800 { color: #1f2937 !important; }
         .text-white { color: #ffffff !important; }
+        .text-red-500 { color: #ef4444 !important; }
+        .text-red-600 { color: #dc2626 !important; }
+        .bg-red-50 { background-color: #fef2f2 !important; }
+        .bg-red-100 { background-color: #fee2e2 !important; }
+        .border-red-100 { border-color: #fee2e2 !important; }
+        .hover\:bg-red-50:hover { background-color: #fef2f2 !important; }
+        .hover\:bg-red-100:hover { background-color: #fee2e2 !important; }
+        .hover\:text-red-600:hover { color: #dc2626 !important; }
         
         /* 背景 */
         .bg-white { background-color: #ffffff !important; }
@@ -155,6 +178,9 @@
         /* 显示/隐藏 */
         .hidden { display: none !important; }
         .block { display: block !important; }
+        @media (min-width: 640px) {
+            .sm\:inline { display: inline !important; }
+        }
         
         /* 变换 */
         .transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important; }
@@ -186,8 +212,9 @@
         /* 按钮和交互 */
         button, a.button {
             cursor: pointer;
+        }
+        button[class*="bg-"], a.button[class*="bg-"] {
             border: none;
-            background: none;
         }
         button:hover, a:hover {
             opacity: 0.9;
@@ -249,6 +276,71 @@
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: .5; }
+        }
+        
+        /* 响应式设计 - 移动端优化 */
+        @media (max-width: 768px) {
+            body {
+                font-size: 16px;
+                -webkit-text-size-adjust: 100%;
+            }
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            button, a.button, input[type="button"], input[type="submit"] {
+                min-height: 44px;
+                min-width: 44px;
+                padding: 0.75rem 1.5rem;
+            }
+            .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .py-12 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+            .mb-12 { margin-bottom: 2rem !important; }
+            .gap-8 { gap: 1.5rem !important; }
+        }
+        
+        /* 温馨样式优化 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        /* 更温馨的按钮样式 */
+        button, a.button {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0.75rem;
+            font-weight: 500;
+        }
+        button:active, a.button:active {
+            transform: scale(0.98);
+        }
+        
+        /* 更温馨的卡片样式 */
+        .card, [class*="rounded-2xl"], [class*="rounded-xl"] {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover, [class*="rounded-2xl"]:hover, [class*="rounded-xl"]:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* 更温馨的输入框样式 */
+        input, textarea {
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            border-width: 1.5px;
+        }
+        input:focus, textarea:focus {
+            border-width: 2px;
+            box-shadow: 0 0 0 4px rgba(255, 194, 209, 0.1);
+        }
+        
+        /* 触摸优化 */
+        @media (hover: none) and (pointer: coarse) {
+            button, a, [role="button"] {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+            }
         }
     </style>
     
@@ -323,8 +415,9 @@
                         <p class="text-sm text-gray-500">欢迎来到相册</p>
                     </div>
                 </div>
-                <button onclick="logout()" class="text-sm text-gray-500 hover:text-rabbit-400 transition-colors">
-                    <i class="fas fa-sign-out-alt mr-1"></i>退出
+                <button onclick="logout()" class="bg-white hover:bg-red-50 text-red-500 font-medium py-2 px-4 rounded-full transition-all duration-300 shadow-sm border border-red-100 hover:shadow-md flex items-center gap-2 min-w-[44px] min-h-[44px]" title="退出登录">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="hidden sm:inline">退出</span>
                 </button>
             </div>
         </div>
@@ -334,7 +427,7 @@
             <div class="bg-gradient-to-r from-rabbit-100/50 to-fish-100/50 backdrop-blur-sm rounded-xl shadow-md p-6 text-center border border-rabbit-200">
                 <i class="fas fa-lock text-4xl text-rabbit-400 mb-3"></i>
                 <p class="text-gray-700 mb-4">请先登录才能上传和管理照片哦~ 💕</p>
-                <button onclick="openAuthModal('login')" class="inline-flex items-center gap-2 bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-2 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg">
+                <button onclick="openAuthModal('login')" class="inline-flex items-center gap-2 bg-rabbit-300 bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-2 px-6 rounded-full transition-all duration-300 shadow-md hover:shadow-lg" style="background-color: #FFC2D1; background-image: linear-gradient(to right, #FFC2D1, #99CCF3);">
                     <i class="fas fa-sign-in-alt"></i>
                     <span>去登录</span>
                 </button>
@@ -363,7 +456,7 @@
                     </div>
                     
                     <button onclick="uploadPhoto()" 
-                        class="w-full bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                        class="w-full bg-rabbit-300 bg-gradient-to-r from-rabbit-300 to-fish-300 hover:from-rabbit-400 hover:to-fish-400 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg" style="background-color: #FFC2D1; background-image: linear-gradient(to right, #FFC2D1, #99CCF3);">
                         <i class="fas fa-upload mr-2"></i>上传照片
                     </button>
                 </div>
